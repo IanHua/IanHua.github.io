@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://ianhua.xyz/tags/index.html</loc>
+    
+    <lastmod>2016-12-30T02:46:28.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://ianhua.xyz/about/index.html</loc>
     
     <lastmod>2016-12-30T02:34:33.000Z</lastmod>
@@ -26,13 +33,6 @@
     <loc>http://ianhua.xyz/2016/06/02/hello/</loc>
     
     <lastmod>2016-06-30T13:41:35.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://ianhua.xyz/tags/index.html</loc>
-    
-    <lastmod>2016-06-30T06:20:20.000Z</lastmod>
     
   </url>
   
