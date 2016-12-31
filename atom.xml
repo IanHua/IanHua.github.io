@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cheesehigh.com/"/>
-  <updated>2016-12-30T16:28:26.000Z</updated>
+  <updated>2016-12-31T03:50:44.000Z</updated>
   <id>http://cheesehigh.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://cheesehigh.com/2016/12/31/csapp/"/>
     <id>http://cheesehigh.com/2016/12/31/csapp/</id>
     <published>2016-12-30T16:04:44.000Z</published>
-    <updated>2016-12-30T16:28:26.000Z</updated>
+    <updated>2016-12-31T03:50:44.000Z</updated>
     
-    <content type="html"><![CDATA[<p>分享一下我在上CMU的18-600: Foundations of Computer Systems (15-213: Introduction to Computer Systems在ECE系的改编课)时对教材”Computer Systems: A Programmer’s Perspective” (CSAPP)的读书笔记，内容按照原书章节组织，主要以重要知识点的形式呈现。</p>
+    <content type="html"><![CDATA[<p>分享一下我在上CMU的18-600: Foundations of Computer Systems (15-213: Introduction to Computer Systems在ECE系的改编课程)时对教材”Computer Systems: A Programmer’s Perspective” (CSAPP)的读书笔记，内容按照原书章节组织，主要以重要知识点的形式呈现。</p>
 <h3 id="A-Tour-of-Computer-Systems"><a href="#A-Tour-of-Computer-Systems" class="headerlink" title="A Tour of Computer Systems"></a>A Tour of Computer Systems</h3><ul>
 <li>Information = bits + context</li>
 <li>Compilation system<ul>
@@ -38,10 +38,76 @@
 </ul>
 <h3 id="Representing-and-Manipulating-Information"><a href="#Representing-and-Manipulating-Information" class="headerlink" title="Representing and Manipulating Information"></a>Representing and Manipulating Information</h3><ul>
 <li>little endian: less significant bytes in low address; big endian: more significant bytes in low address</li>
-<li>typedef unsigned char <em>byte_pointer: type alias<br>Bit Operation: ~ NOT; ^ Exclusive OR<br>Logic Operation(&amp;&amp;, ||, !): Any non-zero parameter = 1<br>Sign bit =-2^w-1<br>Signed &lt;-&gt; Unsigned: Bit pattern do not change, +/- 2^w<br>Signed mixed with unsigned: signed -&gt; unsigned<br>Pay attention to Tmin and 0<br>Java only supports signed integer<br>Two’s Complement = Signed = 补码; Addition = Bit addition + truncating<br>Multiplication is costly, use shift + addition/substraction<br>Unsigned Division: right logic shift; Two’s Complement Division: right arithmetic shift<br>IEEE floating point = (-1)^s </em> M(frac) * 2^E(exp), need approximation and round<br>Normalized: exp != all 0 &amp;&amp; exp !=all 1: E = exp - bias(2^k-1 - 1); M = 1 + .frac;<br>Denormalized: exp == all 0: E = 1- bias; M = .frac;<br>Special value: exp == all 1: Inf(frac = all 0, should be set to 0); NaN(frac != 0)<br>In the half, round to even<br>unsigned int a = 15213U;<br>long: 4 Bytes(32 bit); 8 Bytes(64 bit)<br>size_t: unsigned int(32 bit); long unsigned int(64 bit)</li>
+<li>typedef unsigned char *byte_pointer: type alias</li>
+<li>Bit Operation: ~ NOT; ^ Exclusive OR</li>
+<li>Logic Operation(&amp;&amp;, ||, !): Any non-zero parameter = 1</li>
+<li>Sign bit =-2^w-1</li>
+<li>Signed &lt;-&gt; Unsigned: Bit pattern do not change, +/- 2^w</li>
+<li>Signed mixed with unsigned: signed -&gt; unsigned</li>
+<li>Pay attention to Tmin and 0</li>
+<li>Java only supports signed integer</li>
+<li>Two’s Complement = Signed = 补码; Addition = Bit addition + truncating</li>
+<li>Multiplication is costly, use shift + addition/substraction</li>
+<li>Unsigned Division: right logic shift; Two’s Complement Division: right arithmetic shift</li>
+<li>IEEE floating point = (-1)^s <em> M(frac) </em> 2^E(exp), need approximation and round</li>
+<li>Normalized: exp != all 0 &amp;&amp; exp !=all 1: E = exp - bias(2^k-1 - 1); M = 1 + .frac;</li>
+<li>Denormalized: exp == all 0: E = 1- bias; M = .frac;</li>
+<li>Special value: exp == all 1: Inf(frac = all 0, should be set to 0); NaN(frac != 0)</li>
+<li>In the half, round to even</li>
+<li>unsigned int a = 15213U;</li>
+<li>long: 4 Bytes(32 bit); 8 Bytes(64 bit)</li>
+<li>size_t: unsigned int(32 bit); long unsigned int(64 bit)</li>
 </ul>
-<h3 id="Machine-Level-Representation-of-Programs"><a href="#Machine-Level-Representation-of-Programs" class="headerlink" title="Machine-Level Representation of Programs"></a>Machine-Level Representation of Programs</h3><p>gcc -O1(optimization level) -g(source code line) -o(compile stage) p p1.c p2.c<br>objdump -d program.o: disassembler generate assembly code from object code<br>Assembly Language: AT&amp;T Format(-&gt;) V.S. Intel Format(&lt;-)<br>byte(b): 8 bits; word(w): 16 bits; long word(l): 32 bits; quad word(q): 64 bits<br>Register: %rax(64)-%eax(32)-%ax(16)-%ah(15-8)-%al(7-0)<br>ax, cx, dx(caller-save); bx, si, di(callee-save): generally purpose; sp: stack pointer; bp: frame pointer<br>$immediate, %Register, disp(base, index<em>scale)<br>SUB src, dst: dst - src -&gt; dst<br>64-bit Multiply: imull src: src </em> %eax -&gt; %edx:%eax<br>64-bit Divide: idivl src: %edx:%eax / src -&gt; %eax, %edx:%eax mod src -&gt; %edx<br>cltd: %eax -&gt; %edx:%eax<br>SAL(Arithmetic Left); SHL(Logical Left); SAR(Arithmetic Right); SHR(Logical Right)<br>condition codes: ZF(zero); SF(negative); OF(signed overflow); CF(unsigned overflow)<br>cmp s2,s1: s1-s2(set condition codes then); set dst; jmp label/*address; signed(g/l); unsigned(a/b)<br>if-else: jmp label; loop: label; jmp label; switch: jump table contains address<br>conditional expression: cmov, conditional move, compute all first, better performance than conditional control for pipeline misprediction<br>procedure(stack frame): (caller)local var, params, return addr, (callee)bp(higher), local var, sp(lower)<br>Array: contiguous memory, address +/- with data type<br>Union: Store one field at a time, referenced by data type<br>Alignment: data address must be multiple of its size<br>x86-64: IA64-AMD64-Intel64: six parameters by ordered register(di,si,dx,cx,r8,r9), no %bp<br>Buffer overflow attack: strcpy to inject instructions and change return address<br>struct member address must align</p>
-<h3 id="Processor-Architecture"><a href="#Processor-Architecture" class="headerlink" title="Processor Architecture"></a>Processor Architecture</h3><p>Y86: Balance between CISC and RISC<br>F: No register<br>HCL(Hardware Control Language): Describe control logic circuit<br>bool out = f(logic operator);<br>multiplexor(output one of the inputs): int out = [s in {I}:A; 1:B];<br>clocked registers: state = output, update when clock rise<br>random-access memories: given address, register file<br>SEQ(Sequential) Processor: Serve one instruction until it finishes<br>Instruction stage: fetch-decode-execute-memory-write back(register)-PC update<br>Every instruction uses one clock cycle. As clock rises, state elements(PC, CC, register file, RAM) updated according to the previous instruction. In the clock cycle, combinational logic propagate to create new value for state elements updated in next clock rise<br>Slow: Each hardware unit is only active for a fraction of the clock cycle<br>Pipelined Processor: One instruction finished this stage will move on to next, next instruction will come<br>throughput = 1 / clock period(stage + pipeline register)<br>The former instruction move on, the address of next instruction(new PC) must be predicted<br>instruction dependency hazard(data + control): stalling + forwarding + both(load interlock)<br>SEQ+: move PC update to the beginning<br>PIPE-: insert pipeline regisger(before the corresponding stage)<br>PIPE: forward logic in decode stage<br>Exception Handling: stat field in pipeline register<br>CPI = 1 + Cbubble/Cinstuction = 1 + load/use + mispredict + ret<br>Branch Target Buffer for dynamic branch prediction: previous instruction addr -&gt; target addr<br>Register Rename: small architecture regs -&gt; large physical regs, ARF -&gt; RRF<br>Load Bypassing: load ahead of store; Load Forwarding: forward store to load</p>
+<h3 id="Machine-Level-Representation-of-Programs"><a href="#Machine-Level-Representation-of-Programs" class="headerlink" title="Machine-Level Representation of Programs"></a>Machine-Level Representation of Programs</h3><ul>
+<li>gcc -O1(optimization level) -g(source code line) -o(compile stage) p p1.c p2.c</li>
+<li>objdump -d program.o: disassembler generate assembly code from object code</li>
+<li>Assembly Language: AT&amp;T Format(-&gt;) V.S. Intel Format(&lt;-)</li>
+<li>byte(b): 8 bits; word(w): 16 bits; long word(l): 32 bits; quad word(q): 64 bits</li>
+<li>Register: %rax(64)-%eax(32)-%ax(16)-%ah(15-8)-%al(7-0)</li>
+<li>ax, cx, dx(caller-save); bx, si, di(callee-save): generally purpose; sp: stack pointer; bp: frame pointer</li>
+<li>$immediate, %Register, disp(base, index*scale)</li>
+<li>SUB src, dst: dst - src -&gt; dst</li>
+<li>64-bit Multiply: imull src: src * %eax -&gt; %edx:%eax</li>
+<li>64-bit Divide: idivl src: %edx:%eax / src -&gt; %eax, %edx:%eax mod src -&gt; %edx</li>
+<li>cltd: %eax -&gt; %edx:%eax</li>
+<li>SAL(Arithmetic Left); SHL(Logical Left); SAR(Arithmetic Right); SHR(Logical Right)</li>
+<li>condition codes: ZF(zero); SF(negative); OF(signed overflow); CF(unsigned overflow)</li>
+<li>cmp s2,s1: s1-s2(set condition codes then); set dst; jmp label/*address; signed(g/l); unsigned(a/b)</li>
+<li>if-else: jmp label; loop: label; jmp label; switch: jump table contains address</li>
+<li>conditional expression: cmov, conditional move, compute all first, better performance than conditional control for pipeline misprediction</li>
+<li>procedure(stack frame): (caller)local var, params, return addr, (callee)bp(higher), local var, sp(lower)</li>
+<li>Array: contiguous memory, address +/- with data type</li>
+<li>Union: Store one field at a time, referenced by data type</li>
+<li>Alignment: data address must be multiple of its size</li>
+<li>x86-64: IA64-AMD64-Intel64: six parameters by ordered register(di,si,dx,cx,r8,r9), no %bp</li>
+<li>Buffer overflow attack: strcpy to inject instructions and change return address</li>
+<li>struct member address must align</li>
+</ul>
+<h3 id="Processor-Architecture"><a href="#Processor-Architecture" class="headerlink" title="Processor Architecture"></a>Processor Architecture</h3><ul>
+<li>Y86: Balance between CISC and RISC</li>
+<li>F: No register</li>
+<li>HCL(Hardware Control Language): Describe control logic circuit</li>
+<li>bool out = f(logic operator);</li>
+<li>multiplexor(output one of the inputs): int out = [s in {I}:A; 1:B];</li>
+<li>clocked registers: state = output, update when clock rise</li>
+<li>random-access memories: given address, register file</li>
+<li>SEQ(Sequential) Processor: Serve one instruction until it finishes</li>
+<li>Instruction stage: fetch-decode-execute-memory-write back(register)-PC update</li>
+<li>Every instruction uses one clock cycle. As clock rises, state elements(PC, CC, register file, RAM) updated according to the previous instruction. In the clock cycle, combinational logic propagate to create new value for state elements updated in next clock rise</li>
+<li>Slow: Each hardware unit is only active for a fraction of the clock cycle</li>
+<li>Pipelined Processor: One instruction finished this stage will move on to next, next instruction will come</li>
+<li>throughput = 1 / clock period(stage + pipeline register)</li>
+<li>The former instruction move on, the address of next instruction(new PC) must be predicted</li>
+<li>instruction dependency hazard(data + control): stalling + forwarding + both(load interlock)</li>
+<li>SEQ+: move PC update to the beginning</li>
+<li>PIPE-: insert pipeline regisger(before the corresponding stage)</li>
+<li>PIPE: forward logic in decode stage</li>
+<li>Exception Handling: stat field in pipeline register</li>
+<li>CPI = 1 + Cbubble/Cinstuction = 1 + load/use + mispredict + ret</li>
+<li>Branch Target Buffer for dynamic branch prediction: previous instruction addr -&gt; target addr</li>
+<li>Register Rename: small architecture regs -&gt; large physical regs, ARF -&gt; RRF</li>
+<li>Load Bypassing: load ahead of store; Load Forwarding: forward store to load</li>
+</ul>
 <h3 id="Optimizing-Program-Performance"><a href="#Optimizing-Program-Performance" class="headerlink" title="Optimizing Program Performance"></a>Optimizing Program Performance</h3><ul>
 <li>Efficient algorithm and data structure</li>
 <li>Compiler can optimize</li>
@@ -55,22 +121,233 @@
 <li>Trade-off between readability and performance</li>
 <li>Loop Unrolling: Reduce iteration and loop operation</li>
 </ul>
-<h3 id="The-Memory-Hierarchy"><a href="#The-Memory-Hierarchy" class="headerlink" title="The Memory Hierarchy"></a>The Memory Hierarchy</h3><p>Register -&gt; N-level Cache -&gt; Main Memory -&gt; Local Disk -&gt; Remote Disk<br>RAM: available when power on<br>one bit = one cell<br>SRAM(Static): Cache; bistable, 6 transistors per bit<br>DRAM(Dynamic): Main Memory; Sensitive, 1 transistor per bit<br>Memory controller with addr and data pins<br>Main Memory -&gt; Memory Modules -&gt; DRAM Chips -&gt; Supercells(row,column) -&gt; 8 cells(1 byte)<br>SDRAM: Synchronous DRAM, replace memory control with clock rise<br>DDR(Double Data Rate): Double control signal and increase buffer<br>ROM: nonvolatile when power off, limited erase time<br>EEPROM(Electrically Erasable Programmable ROM): Flash Memory, Solid State Disk<br>CPU - Bus Interface - System Bus - I/O Bridge - Memory Bus - Main Memory<br>I/O Bridge - I/O Bus(Peripheral Component Interconnect)<br>Universal Serial Bus(SSD), Host Bus Adaptor(SCSI, SATA)<br>sector + gap -&gt; track -&gt; cylinder &lt;=&gt; Logic Block<br>RPM: Revolutions Per Minute<br>Access Time = avg seek time + avg rotation latency + avg transfer time<br>Temporal Locality: reference itself; Spatial Locality: reference nearby location<br>Cache: S sets -&gt; E lines -&gt; 1 valid bit + t tag bits + B bytes block; C= BES<br>Memory Address: t bits tag + s bits set index + b bits block offset<br>Direct Mapped Cache(E=1); E-way Set Associative Cache(1&lt;E&lt;ES); Fully Associative Cache(S=1)<br>(valid == 1 &amp;&amp; tag match) ? hit : miss;<br>Miss: Fetch entire block from memory to cache line<br>Cold Miss, Conflict Miss, Capacity Miss<br>Memory Mountain: read throughput = f(size(temporal locality),stride(spatial locality))</p>
-<h3 id="Linking"><a href="#Linking" class="headerlink" title="Linking"></a>Linking</h3><p>Collect and combine code and data into a single file that can be loaded into memory and executed<br>Linker enables separate complition, link at (static linker)compile time, (dynamic linker)load time, run time<br>Symbol resolution<br>Symbol: variables + functions<br>static: local symbol; nonstatic: global symbol defined by self; external: global symbol defined by others<br>strong symbol: initialized global variable and function; weak symbol: uninitialized global variable<br>strong with strong: link error; strong with weak: pick strong; weak with weak: pick any one<br>static library: lib.a(archive), only copy the object modules that are referenced<br>E: object file; U: undefined symbol; D: defined symbol<br>scan object file and static library in order and update E, U, D<br>Referenced file should after file that reference it<br>Relocation: section merge + relocate symbol reference within section<br>Load executable object file: copying the program into memory and then running<br>Shared library: dynamic link at run time, lib.so<br>dynamic link in program: handle = dlopen(lib.so); func = dlsym(handle,”func”); dlclose(handle)<br>Position Independent Code: distance between code segment and data segment is constant<br>Global Offset Table + Procedure Linkage Table</p>
-<h3 id="Exceptional-Control-Flow"><a href="#Exceptional-Control-Flow" class="headerlink" title="Exceptional Control Flow"></a>Exceptional Control Flow</h3><p>Control Flow: Sequence of control transfer<br>Sychronous: Call return only if it finished; Asynchronous: Call return immediately and notify later if finish<br>Exception: OS and hardware(low-level), interrupt(I/O device, Processor issue to OS), trap, fault, abort<br>Event occur -&gt; exception -&gt; exception table -&gt; exception handler(kernel mode) -&gt; return/abort<br>System Call(trap, 0x80 in exception table): syscall, Application call OS<br>Fault(might recoverable)<br>Floating Exception: Divide by 0; Segmentation Fault: Access undefined address and write read-only file<br>Program: a collection of code and data<br>Process: Instance of a program in execution, illusion that has exclusive use of processor and memory<br>Process need context switching when exception occur, threads are in the same context<br>3 states of process: Running, Stopped, Terminated<br>fork(): parent -&gt; child, return child pid to parent and 0 to child, parent reap its terminated child(zombie)<br>pid waitpid(pid,status,option): waits children to terminate or stop and reap them<br>execve(filename,argv,envp): loads and runs a new program in the context of the current process<br>fork: new process, same program; execve: same process, new program<br>Signal: Application and OS(high-level), kernel notify process that event occur<br>block(can be deliver until unblock) - pending(only one for one type) - receive<br>process group: -PID<br>signal(signum,handler): install user-defined handler for handling received signal<br>Nonlocal jumps: jump to other function, setjmp(like catch) + longjmp(return setjmp, like throw)</p>
-<h3 id="Virtual-Memory"><a href="#Virtual-Memory" class="headerlink" title="Virtual Memory"></a>Virtual Memory</h3><p>Physical Addressing(PA): 0~M-1, m bits; Virtual Addressing(VA): 0~N-1, n bits<br>Memory Management Unit(MMU) translate VA to PA<br>Cache Transfer Unit: page, block<br>Each process have its own virtual adress space and page table<br>Virtual Memory: Array of N contiguous byte-sized cells stored on disk<br>Unallocated(no space on disk), Cached(fully associative in physical memory), Uncached(on disk)<br>Page Table Base Register -&gt; Page Table(in cache or memory): each entry map VP to PP<br>Virtual Page(VP) | valid | Physical Page(PP) | Permission Bits(SUP, READ, WRITE)<br>        0                |   1    | physical address(cached), page hit<br>        1                |   0    | disk address(uncached), page fault, swap/page in/out and execute again<br>        2                |   0    | null(unallocated)<br>Demand Paging: the strategy of waiting until the last moment to swap in a page, when a miss occurs<br>Virtual Page Number -&gt; Page Table Entry -&gt; Physical Page Number<br>Virtual Page Offset = Physical Page Offset<br>Translation Lookaside Buffer: cache of page table(SRAM and DRAM) in MMU<br>Multi-level page tables: bits of (page amount) are separated into multiple sections<br>m*n PTEs are organized as m PTEs(level 1), n PTEs(level2) for each level 1 PTE, level 2 n PTEs doesn’t exist if corresponding level 1 PTE is null</p>
+<h3 id="The-Memory-Hierarchy"><a href="#The-Memory-Hierarchy" class="headerlink" title="The Memory Hierarchy"></a>The Memory Hierarchy</h3><ul>
+<li>Register -&gt; N-level Cache -&gt; Main Memory -&gt; Local Disk -&gt; Remote Disk</li>
+<li>RAM: available when power on</li>
+<li>one bit = one cell</li>
+<li>SRAM(Static): Cache; bistable, 6 transistors per bit</li>
+<li>DRAM(Dynamic): Main Memory; Sensitive, 1 transistor per bit</li>
+<li>Memory controller with addr and data pins</li>
+<li>Main Memory -&gt; Memory Modules -&gt; DRAM Chips -&gt; Supercells(row,column) -&gt; 8 cells(1 byte) </li>
+<li>SDRAM: Synchronous DRAM, replace memory control with clock rise</li>
+<li>DDR(Double Data Rate): Double control signal and increase buffer</li>
+<li>ROM: nonvolatile when power off, limited erase time</li>
+<li>EEPROM(Electrically Erasable Programmable ROM): Flash Memory, Solid State Disk</li>
+<li>CPU - Bus Interface - System Bus - I/O Bridge - Memory Bus - Main Memory<br>I/O Bridge - I/O Bus(Peripheral Component Interconnect)</li>
+<li>Universal Serial Bus(SSD), Host Bus Adaptor(SCSI, SATA)</li>
+<li>sector + gap -&gt; track -&gt; cylinder &lt;=&gt; Logic Block</li>
+<li>RPM: Revolutions Per Minute</li>
+<li>Access Time = avg seek time + avg rotation latency + avg transfer time</li>
+<li>Temporal Locality: reference itself; Spatial Locality: reference nearby location</li>
+<li>Cache: S sets -&gt; E lines -&gt; 1 valid bit + t tag bits + B bytes block; C= BES</li>
+<li>Memory Address: t bits tag + s bits set index + b bits block offset</li>
+<li>Direct Mapped Cache(E=1); E-way Set Associative Cache(1&lt;E&lt;ES); Fully Associative Cache(S=1)</li>
+<li>(valid == 1 &amp;&amp; tag match) ? hit : miss;</li>
+<li>Miss: Fetch entire block from memory to cache line</li>
+<li>Cold Miss, Conflict Miss, Capacity Miss</li>
+<li>Memory Mountain: read throughput = f(size(temporal locality),stride(spatial locality))</li>
+</ul>
+<h3 id="Linking"><a href="#Linking" class="headerlink" title="Linking"></a>Linking</h3><ul>
+<li>Collect and combine code and data into a single file that can be loaded into memory and executed</li>
+<li>Linker enables separate complition, link at (static linker)compile time, (dynamic linker)load time, run time</li>
+<li>Symbol resolution</li>
+<li>Symbol: variables + functions</li>
+<li>static: local symbol; nonstatic: global symbol defined by self; external: global symbol defined by others</li>
+<li>strong symbol: initialized global variable and function; weak symbol: uninitialized global variable</li>
+<li>strong with strong: link error; strong with weak: pick strong; weak with weak: pick any one</li>
+<li>static library: lib.a(archive), only copy the object modules that are referenced</li>
+<li>E: object file; U: undefined symbol; D: defined symbol</li>
+<li>scan object file and static library in order and update E, U, D</li>
+<li>Referenced file should after file that reference it</li>
+<li>Relocation: section merge + relocate symbol reference within section</li>
+<li>Load executable object file: copying the program into memory and then running</li>
+<li>Shared library: dynamic link at run time, lib.so</li>
+<li>dynamic link in program: handle = dlopen(lib.so); func = dlsym(handle,”func”); dlclose(handle)</li>
+<li>Position Independent Code: distance between code segment and data segment is constant</li>
+<li>Global Offset Table + Procedure Linkage Table</li>
+</ul>
+<h3 id="Exceptional-Control-Flow"><a href="#Exceptional-Control-Flow" class="headerlink" title="Exceptional Control Flow"></a>Exceptional Control Flow</h3><ul>
+<li>Control Flow: Sequence of control transfer</li>
+<li>Sychronous: Call return only if it finished; Asynchronous: Call return immediately and notify later if finish</li>
+<li>Exception: OS and hardware(low-level), interrupt(I/O device, Processor issue to OS), trap, fault, abort</li>
+<li>Event occur -&gt; exception -&gt; exception table -&gt; exception handler(kernel mode) -&gt; return/abort</li>
+<li>System Call(trap, 0x80 in exception table): syscall, Application call OS<br>Fault(might recoverable)</li>
+<li>Floating Exception: Divide by 0; Segmentation Fault: Access undefined address and write read-only file</li>
+<li>Program: a collection of code and data</li>
+<li>Process: Instance of a program in execution, illusion that has exclusive use of processor and memory</li>
+<li>Process need context switching when exception occur, threads are in the same context</li>
+<li>3 states of process: Running, Stopped, Terminated</li>
+<li>fork(): parent -&gt; child, return child pid to parent and 0 to child, parent reap its terminated child(zombie)</li>
+<li>pid waitpid(pid,status,option): waits children to terminate or stop and reap them</li>
+<li>execve(filename,argv,envp): loads and runs a new program in the context of the current process</li>
+<li>fork: new process, same program; execve: same process, new program</li>
+<li>Signal: Application and OS(high-level), kernel notify process that event occur</li>
+<li>block(can be deliver until unblock) - pending(only one for one type) - receive</li>
+<li>process group: -PID</li>
+<li>signal(signum,handler): install user-defined handler for handling received signal</li>
+<li>Nonlocal jumps: jump to other function, setjmp(like catch) + longjmp(return setjmp, like throw)</li>
+</ul>
+<h3 id="Virtual-Memory"><a href="#Virtual-Memory" class="headerlink" title="Virtual Memory"></a>Virtual Memory</h3><ul>
+<li>Physical Addressing(PA): 0~M-1, m bits; Virtual Addressing(VA): 0~N-1, n bits<br>Memory Management Unit(MMU) translate VA to PA</li>
+<li>Cache Transfer Unit: page, block</li>
+<li>Each process have its own virtual adress space and page table</li>
+<li>Virtual Memory: Array of N contiguous byte-sized cells stored on disk</li>
+<li>Unallocated(no space on disk), Cached(fully associative in physical memory), Uncached(on disk)</li>
+<li>Page Table Base Register -&gt; Page Table(in cache or memory): each entry map VP to PP</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Virtual Page(VP)</th>
+<th style="text-align:center">valid</th>
+<th style="text-align:center">Physical Page(PP)</th>
+<th style="text-align:center">Permission Bits(SUP, READ, WRITE)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">        0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">physical address(cached), page hit</td>
+</tr>
+<tr>
+<td style="text-align:center">        1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">disk address(uncached), page fault, swap/page in/out and execute again</td>
+</tr>
+<tr>
+<td style="text-align:center">        2</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">null(unallocated)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Demand Paging: the strategy of waiting until the last moment to swap in a page, when a miss occurs</li>
+<li>Virtual Page Number -&gt; Page Table Entry -&gt; Physical Page Number</li>
+<li>Virtual Page Offset = Physical Page Offset</li>
+<li>Translation Lookaside Buffer: cache of page table(SRAM and DRAM) in MMU</li>
+<li>Multi-level page tables: bits of (page amount) are separated into multiple sections</li>
+<li>m*n PTEs are organized as m PTEs(level 1), n PTEs(level2) for each level 1 PTE, level 2 n PTEs doesn’t exist if corresponding level 1 PTE is null</li>
+</ul>
 <ol>
 <li>VA -&gt;PA<br>hit: VPN -&gt; MMU(TLB) -&gt; PPN<br>miss: VPN -&gt; multi-level page table -&gt; PPN</li>
-<li>Get data word<br>PA -&gt; Cache -&gt; Physical Memory<br>Linux Virtual Memory: vm_area_structs -&gt; different sections of process virtual memory<br>Memory Mapping: initialize virtual memory area by associating it with an object(shared, private copy-on-write, anonymous) on disk<br>mmap: create a new virtual memory area which mapped to a object; munmap: delete the area<br>brk: top of the heap; payload: actual requested size; bp: block pointer, the first word after header<br>void <em>sbrk(intptr_t incr); // set brk to grow or shrink the heap<br>void </em>malloc(size_t size); // allocate one size space, return null on error, not initialized<br>Notice Allocate Alignment!<br>void <em>calloc(size_t numElements, size_t sizeOfElement); // allocate initialized spaces<br>void </em>realloc(void <em>ptr, size_t newsize); // reallocate ptr with one newsize space, might in new location<br>void free(void</em> ptr); //explicitly free allocated block<br>Goal: maximize throughput(request number), maximize memory utilization(peak utilization)<br>internal fragmentation: allocated block &gt; request; external fragmentation: every free block &lt; request<br>boundary tags: copy header to footer, current block just check one previous word<br>implicit free list: start + 2 prologue + heap blocks(header + payload + padding + footer) + epilogue<br>placement, splitting, coalescing(false fragmentation, combine free blocks)<br>explicit free list: doubly linked free list; segregated free list: multiple free lists of different size<br>buddy system: segregated free list of sizes of power of two<br>new/delete: C++ operator, allocate/free self-defined object, do construction构造 &amp; deconstruction析构<br>Garbage Collection: implicitly free allocated block, directed graph(root nodes -&gt; heap nodes)<br>garbage: unreachable nodes which will never be used again<br>Mark&amp;Sweep: mark reachable blocks and sweep unmarked allocated blocks</li>
+<li>Get data word<br>PA -&gt; Cache -&gt; Physical Memory</li>
 </ol>
-<h3 id="System-Level-I-O"><a href="#System-Level-I-O" class="headerlink" title="System-Level I/O"></a>System-Level I/O</h3><p>I/O: copy data between main memory and external device(disk drive, terminal, networks: file)<br>open/close file<br>int open(filename,flags,mode); return file descriptor(fd); int close(fd);<br>unix shell begin with three descriptor: stdin, stdout, stderr<br>read/write file<br>read(fd,buf,size); write(fd,buf,size);<br>RIO(Robust I/O) for handling short counts(fewer bytes than request, EOF, text line, network delay)<br>unbuffered for network delay; buffered for text line<br>buffer in memory can improve efficiency: interact with buffer directly rather than use system call every time to r/w some small bytes, buffer interact with file by buffersize at a time<br>change file position<br>file metadata: stat(filename,buf);<br>open file data structure<br>descriptor table(unique for process) -&gt; open file table(file pos) -&gt; v-node table(file)(shared by process)<br>I/O Redirection: int dup2(oldfd,newfd), copy descriptor table entry of oldfd to newfd<br>C Standard I/O, RIO(higher-level) - Unix I/O(lower-level, for network)</p>
-<h3 id="Network-Programming"><a href="#Network-Programming" class="headerlink" title="Network Programming"></a>Network Programming</h3><p>client-server transaction: client process request server process, server process response client process<br>TCP/IP Protocol Stack: Application Layer - Transport Layer - Internet Layer - Network Access Layer<br>LAN: Bridged Ethernet(Host - Hub(copy every bit to every other port) - Bridge(selectively copy frame to dest))<br>internet: LAN - router(connect incompatible LANs); Global IP Internet: one implementation of internet<br>Reliable Transfer: no transfer error including lost, duplicate and wrong order<br>TCP(Transmission Control Protocol)/UDP(Unreliable Datagram Protocol): process to process<br>Three-way Handshake: SYN -&gt; SYN+ACK -&gt; ACK<br>IP(Internet Protocol): host to host(send datagrams, unreliable)<br>MAC Address: 48 bit; IP Address: 32 bit(ipv6: 16 Bytes), dotted-decimal notation; Network Byte Order: big-endian<br>unnamed root -&gt; first-level domain name(com) -&gt; second-level domain name(google) -&gt; third-level domain name(www)<br>Socket: end point of connection, IP address:port(16 bit); ephemeral port, well-known port<br>Socket Interface<br>Client: open_clientfd(socket - connect) - I/O - close; Server: open_listenfd(socket - bind - listen) - accept - I/O - close<br>client blocks in connect, server blocks in accept<br>listening descriptor exist for lifetime of server(open_listenfd); connected descriptor exist during the connection(accept)<br>World Wide Web is a service provided by Internet using HTTP(Hypertext Transfer Protocol)<br>MIME: Multipurpose Internet Mail Extensions<br>URI(Uniform Resource Identifier) = URL(locater) + URN(name)<br>HTTP Request Line: method URI version; HTTP Response Line: version status code status message<br>status code: 200(OK), 301(permanently redirect), 302(temporarily redirect), 403(Forbidden), 404(Not found)<br>CGI(Common Gateway Interface): interface with executable programs on a server that generate web pages dynamically<br>Proxy: bypass firewall, page translation, anonymizer,  cache</p>
-<h3 id="Concurrent-Programming"><a href="#Concurrent-Programming" class="headerlink" title="Concurrent Programming"></a>Concurrent Programming</h3><p>Processes<br>parent forks a child to handle each new connection request, child closes listenfd, parent closes connfd<br>Interprocess Communication(IPC)<br>Pros: having separate virtual address space; Cons: difficult to share state information, high overhead<br>I/O Multiplexing<br>select function blocks until one of the descriptors in the read set is ready to read<br>state machine: (input state, input event) -&gt; output state<br>Pros: more control, share state information; Cons: complexity<br>Threads(hybrid of Process and I/O Multiplexing)<br>Like processes, threads are scheduled automatically by the kernel and are known to the kernel by an integer ID. Like I/O multiplexing, multiple threads run in the context of a single process, and thus share the entire contents of the process virtual address space, including its code, data, heap, shared libraries, and open files. Each thread has its own thread context(thread ID(TID), stack, stack pointer, program counter, general-purpose registers, condition codes)<br>main thread(the first thread)<br>peer threads: thread can kill any of its peers or wait for any of its peers to terminate.<br>POSIX Thread: pthread, pthread_t tid<br>joinable thread(default): reaped and killed by other threads and memory resources are not freed until it is reaped by another thread; detached thread(prefer): cannot be reaped or killed by other threads and memory resources are freed automatically by the system when it terminates.<br>Global variables: one instance in virtual address space and can be referenced by any thread<br>Local automatic variables: each thread’s stack contains its own instances and can also be shared though<br>Local static variables: one instance in virtual address space and can be referenced by any thread<br>Thread safe: manipulate shared data structures by multiple threads and guarantee safe execution and correct result<br>Thread synchronization: coordinate threads to access critical section<br>Semaphore: solution to synchronization, a nonnegative global variable s<br>P(s): decrement s if s is nonzero, block if s is zero until V(s); V(s): increment s, restart one P(s) if s becomes nonzero<br>P and V cannot be interrupted: atomic operation<br>Mutual Exclusion: initialize s with 1; P(s); Do(); V(s); Only can execute Do() with THE ONE s(mutex), like talking pillow<br>Producer-Consumer Problem: Producer: P(slot)-P(mutex)-insert-V(mutex)-V(item); Consumer: P(item)-P(mutex)-remove-V(mutex)-V(slot)<br>Readers-Writers Problem: reader-favored(reader can read although writer is waiting); writer-favored(writer write as soon as possible after the previous readers finish)<br>Reader: P(mutex); readcnt++; if(readcnt == 1) {P(w);} V(mutex); Read(); P(mutex); readcnt–; if(readcnt == 0) {V(w);} V(mutex); Writer: P(w); Write(); V(w);<br>Parallel programs are often written so that each core runs exactly one thread(cat /proc/cpuinfo)<br>Reentrant function(subset of thread-safe function): do not reference any shared data<br>Deadlock: each thread is waiting for the other to do V that will never occur, because of wrong order of P and V</p>
+<ul>
+<li>Linux Virtual Memory: vm_area_structs -&gt; different sections of process virtual memory</li>
+<li>Memory Mapping: initialize virtual memory area by associating it with an object(shared, private copy-on-write, anonymous) on disk</li>
+<li>mmap: create a new virtual memory area which mapped to a object; munmap: delete the area</li>
+<li>brk: top of the heap; payload: actual requested size; bp: block pointer, the first word after header</li>
+<li>void *sbrk(intptr_t incr); // set brk to grow or shrink the heap</li>
+<li>void *malloc(size_t size); // allocate one size space, return null on error, not initialized</li>
+<li>Notice Allocate Alignment!</li>
+<li>void *calloc(size_t numElements, size_t sizeOfElement); // allocate initialized spaces </li>
+<li>void <em>realloc(void </em>ptr, size_t newsize); // reallocate ptr with one newsize space, might in new location</li>
+<li>void free(void* ptr); //explicitly free allocated block</li>
+<li>Goal: maximize throughput(request number), maximize memory utilization(peak utilization)</li>
+<li>internal fragmentation: allocated block &gt; request; external fragmentation: every free block &lt; request</li>
+<li>boundary tags: copy header to footer, current block just check one previous word</li>
+<li>implicit free list: start + 2 prologue + heap blocks(header + payload + padding + footer) + epilogue</li>
+<li>placement, splitting, coalescing(false fragmentation, combine free blocks)</li>
+<li>explicit free list: doubly linked free list; segregated free list: multiple free lists of different size</li>
+<li>buddy system: segregated free list of sizes of power of two</li>
+<li>new/delete: C++ operator, allocate/free self-defined object, do construction构造 &amp; deconstruction析构</li>
+<li>Garbage Collection: implicitly free allocated block, directed graph(root nodes -&gt; heap nodes)</li>
+<li>garbage: unreachable nodes which will never be used again</li>
+<li>Mark&amp;Sweep: mark reachable blocks and sweep unmarked allocated blocks</li>
+</ul>
+<h3 id="System-Level-I-O"><a href="#System-Level-I-O" class="headerlink" title="System-Level I/O"></a>System-Level I/O</h3><ul>
+<li>I/O: copy data between main memory and external device(disk drive, terminal, networks: file)</li>
+<li>open/close file<ul>
+<li>int open(filename,flags,mode); return file descriptor(fd); int close(fd);</li>
+<li>unix shell begin with three descriptor: stdin, stdout, stderr</li>
+</ul>
+</li>
+<li>read/write file<ul>
+<li>read(fd,buf,size); write(fd,buf,size);</li>
+<li>RIO(Robust I/O) for handling short counts(fewer bytes than request, EOF, text line, network delay)</li>
+</ul>
+</li>
+<li>unbuffered for network delay; buffered for text line</li>
+<li>buffer in memory can improve efficiency: interact with buffer directly rather than use system call every time to r/w some small bytes, buffer interact with file by buffersize at a time</li>
+<li>change file position</li>
+<li>file metadata: stat(filename,buf);</li>
+<li>open file data structure<ul>
+<li>descriptor table(unique for process) -&gt; open file table(file pos) -&gt; v-node table(file)(shared by process)</li>
+</ul>
+</li>
+<li>I/O Redirection: int dup2(oldfd,newfd), copy descriptor table entry of oldfd to newfd</li>
+<li>C Standard I/O, RIO(higher-level) - Unix I/O(lower-level, for network)</li>
+</ul>
+<h3 id="Network-Programming"><a href="#Network-Programming" class="headerlink" title="Network Programming"></a>Network Programming</h3><ul>
+<li>client-server transaction: client process request server process, server process response client process</li>
+<li>TCP/IP Protocol Stack: Application Layer - Transport Layer - Internet Layer - Network Access Layer</li>
+<li>LAN: Bridged Ethernet(Host - Hub(copy every bit to every other port) - Bridge(selectively copy frame to dest))</li>
+<li>internet: LAN - router(connect incompatible LANs); Global IP Internet: one implementation of internet</li>
+<li>Reliable Transfer: no transfer error including lost, duplicate and wrong order</li>
+<li>TCP(Transmission Control Protocol)/UDP(Unreliable Datagram Protocol): process to process</li>
+<li>Three-way Handshake: SYN -&gt; SYN+ACK -&gt; ACK</li>
+<li>IP(Internet Protocol): host to host(send datagrams, unreliable)</li>
+<li>MAC Address: 48 bit; IP Address: 32 bit(ipv6: 16 Bytes), dotted-decimal notation; Network Byte Order: big-endian</li>
+<li>unnamed root -&gt; first-level domain name(com) -&gt; second-level domain name(google) -&gt; third-level domain name(www)</li>
+<li>Socket: end point of connection, IP address:port(16 bit); ephemeral port, well-known port</li>
+<li>Socket Interface<ul>
+<li>Client: open_clientfd(socket - connect) - I/O - close; Server: open_listenfd(socket - bind - listen) - accept - I/O - close</li>
+<li>client blocks in connect, server blocks in accept</li>
+<li>listening descriptor exist for lifetime of server(open_listenfd); connected descriptor exist during the connection(accept)</li>
+</ul>
+</li>
+<li>World Wide Web is a service provided by Internet using HTTP(Hypertext Transfer Protocol)</li>
+<li>MIME: Multipurpose Internet Mail Extensions</li>
+<li>URI(Uniform Resource Identifier) = URL(locater) + URN(name)</li>
+<li>HTTP Request Line: method URI version; HTTP Response Line: version status code status message</li>
+<li>status code: 200(OK), 301(permanently redirect), 302(temporarily redirect), 403(Forbidden), 404(Not found)</li>
+<li>CGI(Common Gateway Interface): interface with executable programs on a server that generate web pages dynamically</li>
+<li>Proxy: bypass firewall, page translation, anonymizer, cache</li>
+</ul>
+<h3 id="Concurrent-Programming"><a href="#Concurrent-Programming" class="headerlink" title="Concurrent Programming"></a>Concurrent Programming</h3><ul>
+<li>Processes<ul>
+<li>parent forks a child to handle each new connection request, child closes listenfd, parent closes connfd</li>
+<li>Interprocess Communication(IPC)</li>
+<li>Pros: having separate virtual address space; Cons: difficult to share state information, high overhead</li>
+</ul>
+</li>
+<li>I/O Multiplexing<ul>
+<li>select function blocks until one of the descriptors in the read set is ready to read</li>
+<li>state machine: (input state, input event) -&gt; output state</li>
+<li>Pros: more control, share state information; Cons: complexity</li>
+</ul>
+</li>
+<li>Threads(hybrid of Process and I/O Multiplexing)<ul>
+<li>Like processes, threads are scheduled automatically by the kernel and are known to the kernel by an integer ID. Like I/O multiplexing, multiple threads run in the context of a single process, and thus share the entire contents of the process virtual address space, including its code, data, heap, shared libraries, and open files. Each thread has its own thread context(thread ID(TID), stack, stack pointer, program counter, general-purpose registers, condition codes)</li>
+</ul>
+</li>
+<li>main thread(the first thread) </li>
+<li>peer threads: thread can kill any of its peers or wait for any of its peers to terminate.</li>
+<li>POSIX Thread: pthread, pthread_t tid</li>
+<li>joinable thread(default): reaped and killed by other threads and memory resources are not freed until it is reaped by another thread; detached thread(prefer): cannot be reaped or killed by other threads and memory resources are freed automatically by the system when it terminates.</li>
+<li>Global variables: one instance in virtual address space and can be referenced by any thread</li>
+<li>Local automatic variables: each thread’s stack contains its own instances and can also be shared though</li>
+<li>Local static variables: one instance in virtual address space and can be referenced by any thread</li>
+<li>Thread safe: manipulate shared data structures by multiple threads and guarantee safe execution and correct result </li>
+<li>Thread synchronization: coordinate threads to access critical section</li>
+<li>Semaphore: solution to synchronization, a nonnegative global variable s</li>
+<li>P(s): decrement s if s is nonzero, block if s is zero until V(s); V(s): increment s, restart one P(s) if s becomes nonzero</li>
+<li>P and V cannot be interrupted: atomic operation</li>
+<li>Mutual Exclusion: initialize s with 1; P(s); Do(); V(s); Only can execute Do() with THE ONE s(mutex), like talking pillow</li>
+<li>Producer-Consumer Problem: Producer: P(slot)-P(mutex)-insert-V(mutex)-V(item); Consumer: P(item)-P(mutex)-remove-V(mutex)-V(slot)</li>
+<li>Readers-Writers Problem: reader-favored(reader can read although writer is waiting); writer-favored(writer write as soon as possible after the previous readers finish)</li>
+<li>Reader: P(mutex); readcnt++; if(readcnt == 1) {P(w);} V(mutex); Read(); P(mutex); readcnt–; if(readcnt == 0) {V(w);} V(mutex); Writer: P(w); Write(); V(w);</li>
+<li>Parallel programs are often written so that each core runs exactly one thread(cat /proc/cpuinfo)</li>
+<li>Reentrant function(subset of thread-safe function): do not reference any shared data</li>
+<li>Deadlock: each thread is waiting for the other to do V that will never occur, because of wrong order of P and V</li>
+</ul>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;分享一下我在上CMU的18-600: Foundations of Computer Systems (15-213: Introduction to Computer Systems在ECE系的改编课)时对教材”Computer Systems: A Programmer
+      &lt;p&gt;分享一下我在上CMU的18-600: Foundations of Computer Systems (15-213: Introduction to Computer Systems在ECE系的改编课程)时对教材”Computer Systems: A Programme
     
     </summary>
     
