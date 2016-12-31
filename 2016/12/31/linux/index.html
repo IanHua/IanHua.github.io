@@ -1,0 +1,1005 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Cheese High" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/cheeseHigh.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="由于本科专业的课程设置非常不合理(存在着地理信息系统、RFID传感器等看似很重要但老师自己也不懂上得无比水和烂的课，我认为即使是物联网工程专业也应当重视计算机的基础课)，无奈只能自己买书来自学，技术的同学不熟悉Linux简直是寸步难行。这里分享一下《鸟哥的Linux私房菜》的读书笔记，内容主要以重要知识点的形式呈现。
+
+计算机五大单元
+
+输入单元
+输出单元
+CPU控制单元
+CPU运算逻辑单元
+内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《鸟哥的Linux私房菜》 Reading Notes">
+<meta property="og:url" content="http://cheesehigh.com/2016/12/31/linux/index.html">
+<meta property="og:site_name" content="Cheese High">
+<meta property="og:description" content="由于本科专业的课程设置非常不合理(存在着地理信息系统、RFID传感器等看似很重要但老师自己也不懂上得无比水和烂的课，我认为即使是物联网工程专业也应当重视计算机的基础课)，无奈只能自己买书来自学，技术的同学不熟悉Linux简直是寸步难行。这里分享一下《鸟哥的Linux私房菜》的读书笔记，内容主要以重要知识点的形式呈现。
+
+计算机五大单元
+
+输入单元
+输出单元
+CPU控制单元
+CPU运算逻辑单元
+内存">
+<meta property="og:updated_time" content="2016-12-31T05:05:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《鸟哥的Linux私房菜》 Reading Notes">
+<meta name="twitter:description" content="由于本科专业的课程设置非常不合理(存在着地理信息系统、RFID传感器等看似很重要但老师自己也不懂上得无比水和烂的课，我认为即使是物联网工程专业也应当重视计算机的基础课)，无奈只能自己买书来自学，技术的同学不熟悉Linux简直是寸步难行。这里分享一下《鸟哥的Linux私房菜》的读书笔记，内容主要以重要知识点的形式呈现。
+
+计算机五大单元
+
+输入单元
+输出单元
+CPU控制单元
+CPU运算逻辑单元
+内存">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 《鸟哥的Linux私房菜》 Reading Notes | Cheese High </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Cheese High</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Cheese High</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+  
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                《鸟哥的Linux私房菜》 Reading Notes
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-12-31T12:30:39+08:00" content="2016-12-31">
+              2016-12-31
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Tech/" itemprop="url" rel="index">
+                    <span itemprop="name">Tech</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/31/linux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/31/linux/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+    <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>由于本科专业的课程设置非常不合理(存在着地理信息系统、RFID传感器等看似很重要但老师自己也不懂上得无比水和烂的课，我认为即使是物联网工程专业也应当重视计算机的基础课)，无奈只能自己买书来自学，技术的同学不熟悉Linux简直是寸步难行。这里分享一下《鸟哥的Linux私房菜》的读书笔记，内容主要以重要知识点的形式呈现。</p>
+<ul>
+<li><p>计算机五大单元</p>
+<ul>
+<li>输入单元</li>
+<li>输出单元</li>
+<li>CPU控制单元</li>
+<li>CPU运算逻辑单元</li>
+<li>内存</li>
+</ul>
+</li>
+<li><p>服务器的设计目的是稳定不死机</p>
+</li>
+<li><p>硬盘和速度用十进制</p>
+</li>
+<li><p>主板</p>
+<ul>
+<li>连接各个组件，有芯片组，电池，BIOS</li>
+<li>Intel：北桥连接CPU、内存、显卡，南桥连接硬盘、USB、网卡</li>
+<li>北桥总线为系统总线，南桥总线为输入输出总线</li>
+<li>AMD：将内存集成进CPU</li>
+</ul>
+</li>
+<li><p>CPU</p>
+<ul>
+<li>不同CPU有不同的指令集，代表着不同技能</li>
+<li>两种CPU<ul>
+<li>精简指令集RISC：IBM的ARM系列，用于手机</li>
+<li>复杂指令集CISC：Intel、AMD的x86系列，用于PC</li>
+</ul>
+</li>
+<li>主频=外频*倍频</li>
+<li>CPU位数为每次能够处理的数据量（字组大小）</li>
+</ul>
+</li>
+<li><p>内存</p>
+<ul>
+<li>使用DRAM</li>
+<li>双通道设计将两个内存集合在一起</li>
+<li>SRAM为CPU中的缓存（cache）</li>
+</ul>
+</li>
+<li><p>显卡（VGA，Video Graphics Array）</p>
+<ul>
+<li>颜色占用显存</li>
+<li>内嵌GPU进行3D加速</li>
+</ul>
+</li>
+<li><p>操作系统</p>
+<ul>
+<li>内核：驱动硬件，资源分配，进程管理，内存管理，文件管理</li>
+<li>系统调用：调用内核</li>
+<li>应用程序在操作系统提供的接口上开发</li>
+</ul>
+</li>
+<li><p>历史</p>
+<ul>
+<li>Multics</li>
+<li>Unics</li>
+<li>Unix(Ken Thompson, Dennis Ritchie from AT&amp;T’s Bell Lab)</li>
+<li>System V &amp; BSD(Berkeley Software Distribution)</li>
+<li>Posix Standards</li>
+<li>Unix收回版权</li>
+<li>Minix</li>
+<li>Linux</li>
+<li>Mac OS X 基于 Free BSD</li>
+<li>Android 基于 Linux</li>
+</ul>
+</li>
+<li><p>每一个设备为文件</p>
+</li>
+<li>磁盘每个扇区（非扇形）大小为512B，扇区组成的圆形为磁道，所有盘片的磁道组成柱面，以柱面号来分区</li>
+<li>第一个扇区包含：主引导分区MBR（Master Boot Record）和分区表</li>
+<li>分区表：主分区+扩展分区（包含逻辑分区），最多4个</li>
+<li>开机先启动BIOS，再找到MBR启动引导加载程序（boot loader），启动操作系统</li>
+<li>其他分区有引导扇区（boot sector），启动引导加载程序（多重引导）</li>
+<li>挂载：目录树和文件系统的关联</li>
+<li><p>swap：内存不够，将不常使用的放到硬盘中</p>
+</li>
+<li><p>文件权限</p>
+<ul>
+<li>chgrp</li>
+<li>chown</li>
+<li>chmod</li>
+<li>user, group, others, all</li>
+<li>rwx</li>
+</ul>
+</li>
+<li><p>目录配置</p>
+<ul>
+<li>Filesystem Hierarchy Standard：是否可分享，是否可变</li>
+<li>/：根目录，系统文件</li>
+<li>/usr：UNIX Software Resource，软件</li>
+<li>/var：系统运行，数据库</li>
+</ul>
+</li>
+<li><p>which：查找PATH中的执行文件</p>
+</li>
+<li>whereis,locate：查找数据库中的文件，快</li>
+<li>find：查找硬盘中的文件，慢</li>
+<li><p>find . -name ‘file’</p>
+</li>
+<li><p>文件系统</p>
+<ul>
+<li>Ext2</li>
+<li>boot sector</li>
+<li>block group</li>
+<li>super block：文件系统整体信息</li>
+<li>inode：文件（文件属性与文件block号，每个文件对应一个inode），目录（目录属性与目录block号）</li>
+<li>block：文件（内容），目录（文件名和文件inode号）</li>
+<li>df：查询磁盘使用量</li>
+<li>du：查询目录的磁盘使用量</li>
+<li>分区（fdisk）-&gt;格式化，创建文件系统（mkfs）-&gt;挂载目录（mount）</li>
+<li>硬连接（ln）：不同目录block指向同一个文件的inode</li>
+<li>符号连接（ln -s）：指向目录的inode</li>
+</ul>
+</li>
+<li><p>压缩和打包</p>
+<ul>
+<li>gzip: file.gz</li>
+<li>bzip2: file.bz2</li>
+<li>打包压缩: tar -zcvf file.tar.gz(tgz)</li>
+<li>解压缩包: tar -zxvf file.tar.gz</li>
+<li>dump: 备份文件系统或目录</li>
+<li>restore: 还原备份</li>
+</ul>
+</li>
+<li><p>vim</p>
+<ul>
+<li>vim是vi的高级版，带有颜色便于编辑程序</li>
+<li>一般模式-&gt;ioa(插入)r(替换)-&gt;编辑模式</li>
+<li>一般模式-&gt;:,/,?-&gt;命令行模式</li>
+<li>ctrl+f：向下翻页</li>
+<li>ctrl+b：向上翻页</li>
+<li>0：本行开头</li>
+<li>$：本行末尾</li>
+<li>G：最后一行</li>
+<li>nG：第n行</li>
+<li>gg：第一行</li>
+<li>dd：删除整行</li>
+<li>nyy：复制n行</li>
+<li>p：粘贴</li>
+<li>u：撤销</li>
+<li>ctrl+r：重做</li>
+<li>ctrl+v：块选择</li>
+<li>/word：向下寻找word，用n向下查找</li>
+<li>?word：向上寻找word，用N向上查找</li>
+<li>:1,$s/word1/word2/g：从开头到末尾用word2替换word1</li>
+<li>:set nu：显示行号</li>
+<li>:sp file：多窗口</li>
+<li>ctrl+w+上/下：多窗口切换</li>
+</ul>
+</li>
+<li><p>shell</p>
+<ul>
+<li>操作系统内核给用户的接口</li>
+<li>bash：Linux的一种标准shell</li>
+<li>type：判断是否是bash内置命令</li>
+<li>pwd：当前目录</li>
+<li>env：查看环境变量</li>
+<li>cd：直接回到用户主文件夹</li>
+<li>alias ll=’ls -al –color=auto’</li>
+<li>自定义变量不能在子进程中使用，环境变量能在子进程中使用</li>
+<li>export VAR：使自定义变量VAR成为环境变量</li>
+<li>/etc/profile：全局环境配置文件</li>
+<li>~/.bashrc：用户环境配置文件</li>
+<li>变量=$(命令)</li>
+<li>变量=$((算式))</li>
+<li>ctrl+d：结束输入(EOF)</li>
+<li>ctrl+c：中止命令</li>
+<li>ctrl+u：删除命令</li>
+<li>ctrl+a：移到开头</li>
+<li>ctrl+e：移到末尾</li>
+<li>数据流重定向<ul>
+<li>stdin：0，&lt;(由文件代替键盘输入)，&lt;&lt;(结束输入符)</li>
+<li>stdout：1，&gt;(覆盖)，&gt;&gt;(累加)</li>
+<li>stderr：2，&gt;(覆盖)，&gt;&gt;(累加)</li>
+</ul>
+</li>
+<li>; 连续命令</li>
+<li>$? 回转码，上个命令执行成功则为0</li>
+<li>cmd1 &amp;&amp; cmd2：cmd1成功则执行cmd2</li>
+<li>cmd1 || cmd2：cmd1失败则执行cmd2</li>
+<li>管道命令(仅处理stdout)</li>
+<li>cat file | grep ‘word’</li>
+<li>grep ‘word’ file：取出整行</li>
+<li>cut：行内分割</li>
+<li>sed：行增删改</li>
+<li>awk：行内字段处理</li>
+</ul>
+</li>
+<li><p>通配符</p>
+<ul>
+<li>? 任意一个字符</li>
+<li>* 0到无穷个字符</li>
+<li>[] 字符集合</li>
+<li>[-] 连续字符</li>
+<li>[^] 反向选择</li>
+</ul>
+</li>
+<li><p>正则表达式(Regular Expression, RE, RegEx)</p>
+<ul>
+<li>处理字符串的一种标准依据</li>
+<li>元字符</li>
+<li>[:alnum:] 字母+数字</li>
+<li>[:alpha:] 字母</li>
+<li>[:upper:] 大写字母</li>
+<li>[:lower:] 小写字母</li>
+<li>[:digit:] 数字</li>
+<li>[] 字符集合表示一个字符</li>
+<li>() 字符分组表示一组字符</li>
+<li>[^] 反选</li>
+<li>^ 行首</li>
+<li>$ 行尾</li>
+<li>. 任意一个字符</li>
+<li>\w 任意一个字母，数字，下划线，汉字</li>
+<li>\s 空格</li>
+<li>\d 数字</li>
+<li>\b 单词开始或结束</li>
+<li>大写为反选</li>
+<li>c* 0到无穷多个的c</li>
+<li>c+ 1到无穷多个的c</li>
+<li>c? 0个或1个c</li>
+<li>c{5} 5个c</li>
+<li>c{2,5} 2到5个c</li>
+<li>| 或</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>shell script<ul>
+<li>#!/bin/bash 声明使用的shell名称</li>
+<li>#注释</li>
+<li>sh -n：检查语法</li>
+<li>sh -x：调试执行过程</li>
+<li>test 测试命令</li>
+<li>-e 是否存在</li>
+<li>-f 是否存在且为文件</li>
+<li>-d 是否存在且为目录</li>
+<li>$0 文件名</li>
+<li>$1, $2… 命令参数 </li>
+<li>条件判断</li>
+<li>函数(放在脚本最前面)</li>
+<li>循环</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">if [ condition ]; then</div><div class="line">elif [ condition ]; then</div><div class="line">else</div><div class="line">fi</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">case $1 in</div><div class="line">     &quot;&quot; )</div><div class="line">          ;;</div><div class="line">     * )</div><div class="line">          ;;</div><div class="line">esac</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">function fname () &#123;</div><div class="line">     直接使用形参$1, $2...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">while/until [ condition ]</div><div class="line">do</div><div class="line">done</div><div class="line">for var in ...</div><div class="line">do</div><div class="line">done</div></pre></td></tr></table></figure>
+<ul>
+<li>用户账号UID /etc/passwd</li>
+<li>用户组GID /etc/group</li>
+<li>密码 /etc/shadow</li>
+<li>访问控制列表(Access Control List)：对单个用户或用户组进行权限管理</li>
+<li>sudo：让/etc/sudoers中的用户仅通过自己的密码进行其他用户的操作</li>
+<li>磁盘Quota：公平分配磁盘给用户，soft-&gt;gracetime-&gt;hard</li>
+<li>Redundant Arrays of Inexpensive Disks：根据性能和备份有不同等级</li>
+<li>Logical Volume Manager逻辑卷管理器：弹性调整文件系统容量</li>
+<li><p>日志文件：/var/log</p>
+</li>
+<li><p>例行性工作</p>
+<ul>
+<li>at：一次</li>
+<li>crontab：循环</li>
+<li>crontab -e</li>
+<li>分 时 日 月 周 命令</li>
+<li>日月和周不可并存</li>
+</ul>
+</li>
+<li><p>进程管理</p>
+<ul>
+<li>硬盘程序加载到内存中为进程PID</li>
+<li>父进程PPID-&gt;fork-&gt;exec-&gt;子进程</li>
+<li>daemon(守护进程，系统服务)：常驻内存的进程</li>
+<li>standalone+super daemon</li>
+</ul>
+</li>
+<li><p>单一终端机的工作管理</p>
+<ul>
+<li>command &amp;：放到后台运行</li>
+<li>ctrl+z：放到后台暂停</li>
+<li>jobs：查看后台工作</li>
+<li>fg：后台工作拿到前台运行</li>
+<li>bg：让后台工作继续运行</li>
+<li>kill -1 PID：重启</li>
+<li>kill -9 PID：强制中止</li>
+<li>kill -15 PID：正常结束</li>
+<li>ps -l：自己的进程</li>
+<li>ps aux：所有系统进程</li>
+<li>top：动态查看进程变化，P以CPU排序，M以内存排序</li>
+<li>进程优先级PRI = PRI +nice</li>
+<li>netstat：网络状态</li>
+<li>ifconfig：查询IP</li>
+<li>whois：域名所有者信息</li>
+<li>host：DNS服务器</li>
+<li>nslookup：域名解析</li>
+<li>SELinux(Security Enhanced Linux)：避免主体进程误用目标资源</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/31/csapp/" rel="next" title="CSAPP Reading Notes">
+                <i class="fa fa-chevron-left"></i> CSAPP Reading Notes
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/31/linux/"
+           data-title="《鸟哥的Linux私房菜》 Reading Notes" data-url="http://cheesehigh.com/2016/12/31/linux/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://o86az1gay.bkt.clouddn.com/cheeseHigh.png"
+               alt="CheeseHigh" />
+          <p class="site-author-name" itemprop="name">CheeseHigh</p>
+          <p class="site-description motion-element" itemprop="description">Cheese High</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/IanHua" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.instagram.com/ian_hua/" target="_blank" title="Instagram">
+                  
+                    <i class="fa fa-fw fa-instagram"></i>
+                  
+                  Instagram
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CheeseHigh</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span id="busuanzi_container_site_pv">
+  &nbsp; | &nbsp; 本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  &nbsp; | &nbsp; 本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"CheeseHigh"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+  <script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>
