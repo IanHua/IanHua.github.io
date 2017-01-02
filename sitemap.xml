@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://cheesehigh.com/2017/01/02/websecurity/</loc>
+    
+    <lastmod>2017-01-02T03:07:00.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://cheesehigh.com/about/index.html</loc>
+    
+    <lastmod>2017-01-01T16:01:29.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://cheesehigh.com/2017/01/01/globalhistory/</loc>
     
     <lastmod>2017-01-01T12:11:51.000Z</lastmod>
@@ -40,13 +54,6 @@
     <loc>http://cheesehigh.com/tags/index.html</loc>
     
     <lastmod>2016-12-30T02:46:28.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://cheesehigh.com/about/index.html</loc>
-    
-    <lastmod>2016-12-30T02:34:33.000Z</lastmod>
     
   </url>
   

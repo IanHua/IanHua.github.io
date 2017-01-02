@@ -1,0 +1,709 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Cheese High" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/cheeseHigh.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="这本道哥的《白帽子讲Web安全》算是我向白帽子迈出的第一步，它覆盖的内容很广，而且带有许多现实漏洞的示例讲解，不过对于没有安全经验的小白(比如我)来说还是很难完全吸收其精华，理解各种漏洞的概念和原理才是初学者的首要任务。个人建议可以结合DVWA和FreeBuf上的相应教程来学习会更有Hands-on的感觉。
+安全世界观安全的本质是信任问题Factors of Security: Confident">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《白帽子讲Web安全》 Reading Notes">
+<meta property="og:url" content="http://cheesehigh.com/2017/01/02/websecurity/index.html">
+<meta property="og:site_name" content="Cheese High">
+<meta property="og:description" content="这本道哥的《白帽子讲Web安全》算是我向白帽子迈出的第一步，它覆盖的内容很广，而且带有许多现实漏洞的示例讲解，不过对于没有安全经验的小白(比如我)来说还是很难完全吸收其精华，理解各种漏洞的概念和原理才是初学者的首要任务。个人建议可以结合DVWA和FreeBuf上的相应教程来学习会更有Hands-on的感觉。
+安全世界观安全的本质是信任问题Factors of Security: Confident">
+<meta property="og:updated_time" content="2017-01-02T03:07:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《白帽子讲Web安全》 Reading Notes">
+<meta name="twitter:description" content="这本道哥的《白帽子讲Web安全》算是我向白帽子迈出的第一步，它覆盖的内容很广，而且带有许多现实漏洞的示例讲解，不过对于没有安全经验的小白(比如我)来说还是很难完全吸收其精华，理解各种漏洞的概念和原理才是初学者的首要任务。个人建议可以结合DVWA和FreeBuf上的相应教程来学习会更有Hands-on的感觉。
+安全世界观安全的本质是信任问题Factors of Security: Confident">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 《白帽子讲Web安全》 Reading Notes | Cheese High </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Cheese High</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Cheese High</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+  
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                《白帽子讲Web安全》 Reading Notes
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-01-02T09:15:30+08:00" content="2017-01-02">
+              2017-01-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Tech/" itemprop="url" rel="index">
+                    <span itemprop="name">Tech</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/02/websecurity/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/02/websecurity/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+    <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这本道哥的《白帽子讲Web安全》算是我向白帽子迈出的第一步，它覆盖的内容很广，而且带有许多现实漏洞的示例讲解，不过对于没有安全经验的小白(比如我)来说还是很难完全吸收其精华，理解各种漏洞的概念和原理才是初学者的首要任务。个人建议可以结合<a href="http://www.dvwa.co.uk/" target="_blank" rel="external">DVWA</a>和FreeBuf上的相应<a href="http://www.freebuf.com/author/lonehand" target="_blank" rel="external">教程</a>来学习会更有Hands-on的感觉。</p>
+<h2 id="安全世界观"><a href="#安全世界观" class="headerlink" title="安全世界观"></a>安全世界观</h2><p>安全的本质是信任问题<br>Factors of Security: Confidentiality, Integrity, Availability<br>Attack: DATA are treated as CODE<br>安全评估：资产等级划分，威胁分析，风险分析，确认解决方案<br>互联网安全的核心问题是数据安全<br>安全策略</p>
+<ul>
+<li>Secure by Default：黑名单(blacklist)/白名单(whitelist)，最小权限原则</li>
+<li>Defense in Depth</li>
+<li>数据与代码分离</li>
+<li>不可预测性防御攻击</li>
+</ul>
+<p>ZoomEye: 公网设备指纹检索和Web指纹检索<br>CVE: Common Vulnerabilities and Exposures<br>POC: Proof of Concept<br>CAPTCHA: 计算机通过扭曲的字符图片来区分人类和计算机(逆图灵测试)  </p>
+<h2 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h2><h3 id="浏览器安全"><a href="#浏览器安全" class="headerlink" title="浏览器安全"></a>浏览器安全</h3><p>Same Origin Policy(同源策略): Cookie, DOM, AJAX<br>多进程浏览器<br>浏览器沙箱(sandbox)：不信任代码隔离运行  </p>
+<h3 id="跨站脚本攻击XSS-Cross-Site-Script"><a href="#跨站脚本攻击XSS-Cross-Site-Script" class="headerlink" title="跨站脚本攻击XSS(Cross Site Script)"></a>跨站脚本攻击XSS(Cross Site Script)</h3><p>Code injection attack that allows an attacker to execute malicious JavaScript in another user’s browser<br>Reflected XSS: Trick victim to send script(query)<br>Persistent XSS: Store script in website’s database(comment)<br>DOM-based XSS: executed at some point after the page has loaded by changing DOM with JS, however the others are executed when the page is loaded<br>Danger: Cookie, Ajax request, Modify HTML<br>XSS Payload<br>Preventing XSS: Context matters<br>Encoding: escape input, code -&gt; data<br>Validation: filter input<br>Content Security Policy (CSP): only use resources from trusted sources, enabled by http response header  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;alert(&apos;/XSS/&apos;);&lt;/script&gt;</div><div class="line">&lt;sc&lt;script&gt;ript&gt;alert(&apos;/XSS/&apos;);&lt;/script&gt;</div><div class="line">&lt;img src=1 onerror=alert(&apos;/XSS/&apos;)&gt;</div></pre></td></tr></table></figure>
+<h3 id="跨站请求伪造CSRF-Cross-Site-Request-Forgery"><a href="#跨站请求伪造CSRF-Cross-Site-Request-Forgery" class="headerlink" title="跨站请求伪造CSRF(Cross Site Request Forgery)"></a>跨站请求伪造CSRF(Cross Site Request Forgery)</h3><p>victim visits malicious site and is sent state-changing request to target site by victim’s browser which is authenticated  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=&quot;target.com/do?method=delete&quot; /&gt;</div></pre></td></tr></table></figure>
+<p>both GET and POST can work<br>session cookie: in the process of browser; third-party cookie: in local disk with expire time<br>Prevent: verification code, referrer header, token  </p>
+<h3 id="点击劫持-ClickJacking"><a href="#点击劫持-ClickJacking" class="headerlink" title="点击劫持(ClickJacking)"></a>点击劫持(ClickJacking)</h3><p>Transparent iframe is covered on the original content<br>图片覆盖，拖拽劫持，触屏劫持(TapJacking)  </p>
+<h3 id="HTML5安全"><a href="#HTML5安全" class="headerlink" title="HTML5安全"></a>HTML5安全</h3><p>新标签: \<video\>, \<audio\>, \<canvas\>  </canvas\></audio\></video\></p>
+<h2 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h2><h3 id="SQL注入-SQL-Injection"><a href="#SQL注入-SQL-Injection" class="headerlink" title="SQL注入(SQL Injection)"></a>SQL注入(SQL Injection)</h3><p>Inject SQL commands which DB will execute  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM table WHERE column = xxx OR 1 = 1</div></pre></td></tr></table></figure>
+<p>测试是否存在注入 -&gt; 获取SQL语句格式 -&gt; 获取数据库名，表名，字段名<br>Blind Injection: No result of query from DB, brute force to validate DB information(布尔判断或时间延迟)<br>存储过程(Stored Procedure): User-defined function<br>Prevent: parameterized(PreparedStatement), PDO(PHP Data Object), check data type  </p>
+<h3 id="文件上传-File-Upload"><a href="#文件上传-File-Upload" class="headerlink" title="文件上传(File Upload)"></a>文件上传(File Upload)</h3><p>Upload web script which is resolved by server and get webshell authority<br>%00截断: file.php%00.jpg<br>Prevent: non-executable upload directory, check file type and header  </p>
+<h3 id="文件包含-File-Inclusion"><a href="#文件包含-File-Inclusion" class="headerlink" title="文件包含(File Inclusion)"></a>文件包含(File Inclusion)</h3><p>include(); require();<br>包含的文件直接显示或作为代码执行: 本地文件包含(LFI)，远程文件包含(RFI)<br>变量覆盖漏洞  </p>
+<h3 id="认证-Authentication-与授权-Authorization"><a href="#认证-Authentication-与授权-Authorization" class="headerlink" title="认证(Authentication)与授权(Authorization)"></a>认证(Authentication)与授权(Authorization)</h3><p>认证作为授权的根据<br>多因素认证<br>Rainbow Table: MD5 -&gt; 明文，使用md5(password + salt)防御<br>Session(会话) ID加密后保存在cookie中<br>垂直权限管理: Role Based Access Control; 水平权限管理: Same Role  </p>
+<h3 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h3><p>分组加密: 分组(ECB模式)或迭代(CBC模式)<br>流加密: 每个字节操作<br>密钥不要硬编码在代码里，应保存在配置文件或数据库中<br>不要使用弱伪随机数  </p>
+<h3 id="分布式拒绝服务-Distributed-Denial-of-Service-DDoS"><a href="#分布式拒绝服务-Distributed-Denial-of-Service-DDoS" class="headerlink" title="分布式拒绝服务(Distributed Denial of Service, DDoS)"></a>分布式拒绝服务(Distributed Denial of Service, DDoS)</h3><p>网络层DDOS: 伪造IP地址发送大量SYN包，服务器不断对这些IP重发SYN+ACK，消耗资源<br>应用层DDOS: 对消耗资源的页面发起大量正常请求<br>解析正则表达式也可能会消耗大量资源<br>Prevent: 性能优化，限制请求频率，验证码  </p>
+<h3 id="Web-Server"><a href="#Web-Server" class="headerlink" title="Web Server"></a>Web Server</h3><p>独立低权限用户，及时同步访问日志  </p>
+<h2 id="产品、业务与运营"><a href="#产品、业务与运营" class="headerlink" title="产品、业务与运营"></a>产品、业务与运营</h2><p>安全是产品的一个特性<br>钓鱼(Phishing): 高仿网站，骗取用户账户密码<br>发件人邮箱可以被伪造<br>黑色产业链: 挂马钓鱼盗取游戏、网银账号，垃圾注册，利用用户隐私诈骗<br>安全开发流程(Security Development Lifecycle)<br>立项阶段与项目经理充分沟通，将安全方案写入开发规范<br>模糊测试(Fuzzing Test): 输入随机数据检测程序漏洞<br>安全是一个持续的过程: 漏洞修补，安全监控，入侵检测，应急响应(Security Response Center)  </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/01/globalhistory/" rel="next" title="《全球通史》 Reading Notes">
+                <i class="fa fa-chevron-left"></i> 《全球通史》 Reading Notes
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/02/websecurity/"
+           data-title="《白帽子讲Web安全》 Reading Notes" data-url="http://cheesehigh.com/2017/01/02/websecurity/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://o86az1gay.bkt.clouddn.com/cheeseHigh.png"
+               alt="CheeseHigh" />
+          <p class="site-author-name" itemprop="name">CheeseHigh</p>
+          <p class="site-description motion-element" itemprop="description">White Hat/History</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/IanHua" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.instagram.com/ian_hua/" target="_blank" title="Instagram">
+                  
+                    <i class="fa fa-fw fa-instagram"></i>
+                  
+                  Instagram
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安全世界观"><span class="nav-number">1.</span> <span class="nav-text">安全世界观</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client"><span class="nav-number">2.</span> <span class="nav-text">Client</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器安全"><span class="nav-number">2.1.</span> <span class="nav-text">浏览器安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨站脚本攻击XSS-Cross-Site-Script"><span class="nav-number">2.2.</span> <span class="nav-text">跨站脚本攻击XSS(Cross Site Script)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨站请求伪造CSRF-Cross-Site-Request-Forgery"><span class="nav-number">2.3.</span> <span class="nav-text">跨站请求伪造CSRF(Cross Site Request Forgery)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点击劫持-ClickJacking"><span class="nav-number">2.4.</span> <span class="nav-text">点击劫持(ClickJacking)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTML5安全"><span class="nav-number">2.5.</span> <span class="nav-text">HTML5安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server"><span class="nav-number">3.</span> <span class="nav-text">Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL注入-SQL-Injection"><span class="nav-number">3.1.</span> <span class="nav-text">SQL注入(SQL Injection)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件上传-File-Upload"><span class="nav-number">3.2.</span> <span class="nav-text">文件上传(File Upload)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件包含-File-Inclusion"><span class="nav-number">3.3.</span> <span class="nav-text">文件包含(File Inclusion)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#认证-Authentication-与授权-Authorization"><span class="nav-number">3.4.</span> <span class="nav-text">认证(Authentication)与授权(Authorization)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加密"><span class="nav-number">3.5.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式拒绝服务-Distributed-Denial-of-Service-DDoS"><span class="nav-number">3.6.</span> <span class="nav-text">分布式拒绝服务(Distributed Denial of Service, DDoS)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Server"><span class="nav-number">3.7.</span> <span class="nav-text">Web Server</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#产品、业务与运营"><span class="nav-number">4.</span> <span class="nav-text">产品、业务与运营</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CheeseHigh</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span id="busuanzi_container_site_pv">
+  &nbsp; | &nbsp; 本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  &nbsp; | &nbsp; 本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ianhua"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+  <script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>

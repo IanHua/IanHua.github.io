@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cheesehigh.com/"/>
-  <updated>2017-01-01T12:11:51.000Z</updated>
+  <updated>2017-01-02T03:07:00.000Z</updated>
   <id>http://cheesehigh.com/</id>
   
   <author>
@@ -14,6 +14,53 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>《白帽子讲Web安全》 Reading Notes</title>
+    <link href="http://cheesehigh.com/2017/01/02/websecurity/"/>
+    <id>http://cheesehigh.com/2017/01/02/websecurity/</id>
+    <published>2017-01-02T01:15:30.000Z</published>
+    <updated>2017-01-02T03:07:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>这本道哥的《白帽子讲Web安全》算是我向白帽子迈出的第一步，它覆盖的内容很广，而且带有许多现实漏洞的示例讲解，不过对于没有安全经验的小白(比如我)来说还是很难完全吸收其精华，理解各种漏洞的概念和原理才是初学者的首要任务。个人建议可以结合<a href="http://www.dvwa.co.uk/" target="_blank" rel="external">DVWA</a>和FreeBuf上的相应<a href="http://www.freebuf.com/author/lonehand" target="_blank" rel="external">教程</a>来学习会更有Hands-on的感觉。</p>
+<h2 id="安全世界观"><a href="#安全世界观" class="headerlink" title="安全世界观"></a>安全世界观</h2><p>安全的本质是信任问题<br>Factors of Security: Confidentiality, Integrity, Availability<br>Attack: DATA are treated as CODE<br>安全评估：资产等级划分，威胁分析，风险分析，确认解决方案<br>互联网安全的核心问题是数据安全<br>安全策略</p>
+<ul>
+<li>Secure by Default：黑名单(blacklist)/白名单(whitelist)，最小权限原则</li>
+<li>Defense in Depth</li>
+<li>数据与代码分离</li>
+<li>不可预测性防御攻击</li>
+</ul>
+<p>ZoomEye: 公网设备指纹检索和Web指纹检索<br>CVE: Common Vulnerabilities and Exposures<br>POC: Proof of Concept<br>CAPTCHA: 计算机通过扭曲的字符图片来区分人类和计算机(逆图灵测试)  </p>
+<h2 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h2><h3 id="浏览器安全"><a href="#浏览器安全" class="headerlink" title="浏览器安全"></a>浏览器安全</h3><p>Same Origin Policy(同源策略): Cookie, DOM, AJAX<br>多进程浏览器<br>浏览器沙箱(sandbox)：不信任代码隔离运行  </p>
+<h3 id="跨站脚本攻击XSS-Cross-Site-Script"><a href="#跨站脚本攻击XSS-Cross-Site-Script" class="headerlink" title="跨站脚本攻击XSS(Cross Site Script)"></a>跨站脚本攻击XSS(Cross Site Script)</h3><p>Code injection attack that allows an attacker to execute malicious JavaScript in another user’s browser<br>Reflected XSS: Trick victim to send script(query)<br>Persistent XSS: Store script in website’s database(comment)<br>DOM-based XSS: executed at some point after the page has loaded by changing DOM with JS, however the others are executed when the page is loaded<br>Danger: Cookie, Ajax request, Modify HTML<br>XSS Payload<br>Preventing XSS: Context matters<br>Encoding: escape input, code -&gt; data<br>Validation: filter input<br>Content Security Policy (CSP): only use resources from trusted sources, enabled by http response header  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;alert(&apos;/XSS/&apos;);&lt;/script&gt;</div><div class="line">&lt;sc&lt;script&gt;ript&gt;alert(&apos;/XSS/&apos;);&lt;/script&gt;</div><div class="line">&lt;img src=1 onerror=alert(&apos;/XSS/&apos;)&gt;</div></pre></td></tr></table></figure>
+<h3 id="跨站请求伪造CSRF-Cross-Site-Request-Forgery"><a href="#跨站请求伪造CSRF-Cross-Site-Request-Forgery" class="headerlink" title="跨站请求伪造CSRF(Cross Site Request Forgery)"></a>跨站请求伪造CSRF(Cross Site Request Forgery)</h3><p>victim visits malicious site and is sent state-changing request to target site by victim’s browser which is authenticated  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=&quot;target.com/do?method=delete&quot; /&gt;</div></pre></td></tr></table></figure>
+<p>both GET and POST can work<br>session cookie: in the process of browser; third-party cookie: in local disk with expire time<br>Prevent: verification code, referrer header, token  </p>
+<h3 id="点击劫持-ClickJacking"><a href="#点击劫持-ClickJacking" class="headerlink" title="点击劫持(ClickJacking)"></a>点击劫持(ClickJacking)</h3><p>Transparent iframe is covered on the original content<br>图片覆盖，拖拽劫持，触屏劫持(TapJacking)  </p>
+<h3 id="HTML5安全"><a href="#HTML5安全" class="headerlink" title="HTML5安全"></a>HTML5安全</h3><p>新标签: \<video\>, \<audio\>, \<canvas\>  </canvas\></audio\></video\></p>
+<h2 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h2><h3 id="SQL注入-SQL-Injection"><a href="#SQL注入-SQL-Injection" class="headerlink" title="SQL注入(SQL Injection)"></a>SQL注入(SQL Injection)</h3><p>Inject SQL commands which DB will execute  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM table WHERE column = xxx OR 1 = 1</div></pre></td></tr></table></figure>
+<p>测试是否存在注入 -&gt; 获取SQL语句格式 -&gt; 获取数据库名，表名，字段名<br>Blind Injection: No result of query from DB, brute force to validate DB information(布尔判断或时间延迟)<br>存储过程(Stored Procedure): User-defined function<br>Prevent: parameterized(PreparedStatement), PDO(PHP Data Object), check data type  </p>
+<h3 id="文件上传-File-Upload"><a href="#文件上传-File-Upload" class="headerlink" title="文件上传(File Upload)"></a>文件上传(File Upload)</h3><p>Upload web script which is resolved by server and get webshell authority<br>%00截断: file.php%00.jpg<br>Prevent: non-executable upload directory, check file type and header  </p>
+<h3 id="文件包含-File-Inclusion"><a href="#文件包含-File-Inclusion" class="headerlink" title="文件包含(File Inclusion)"></a>文件包含(File Inclusion)</h3><p>include(); require();<br>包含的文件直接显示或作为代码执行: 本地文件包含(LFI)，远程文件包含(RFI)<br>变量覆盖漏洞  </p>
+<h3 id="认证-Authentication-与授权-Authorization"><a href="#认证-Authentication-与授权-Authorization" class="headerlink" title="认证(Authentication)与授权(Authorization)"></a>认证(Authentication)与授权(Authorization)</h3><p>认证作为授权的根据<br>多因素认证<br>Rainbow Table: MD5 -&gt; 明文，使用md5(password + salt)防御<br>Session(会话) ID加密后保存在cookie中<br>垂直权限管理: Role Based Access Control; 水平权限管理: Same Role  </p>
+<h3 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h3><p>分组加密: 分组(ECB模式)或迭代(CBC模式)<br>流加密: 每个字节操作<br>密钥不要硬编码在代码里，应保存在配置文件或数据库中<br>不要使用弱伪随机数  </p>
+<h3 id="分布式拒绝服务-Distributed-Denial-of-Service-DDoS"><a href="#分布式拒绝服务-Distributed-Denial-of-Service-DDoS" class="headerlink" title="分布式拒绝服务(Distributed Denial of Service, DDoS)"></a>分布式拒绝服务(Distributed Denial of Service, DDoS)</h3><p>网络层DDOS: 伪造IP地址发送大量SYN包，服务器不断对这些IP重发SYN+ACK，消耗资源<br>应用层DDOS: 对消耗资源的页面发起大量正常请求<br>解析正则表达式也可能会消耗大量资源<br>Prevent: 性能优化，限制请求频率，验证码  </p>
+<h3 id="Web-Server"><a href="#Web-Server" class="headerlink" title="Web Server"></a>Web Server</h3><p>独立低权限用户，及时同步访问日志  </p>
+<h2 id="产品、业务与运营"><a href="#产品、业务与运营" class="headerlink" title="产品、业务与运营"></a>产品、业务与运营</h2><p>安全是产品的一个特性<br>钓鱼(Phishing): 高仿网站，骗取用户账户密码<br>发件人邮箱可以被伪造<br>黑色产业链: 挂马钓鱼盗取游戏、网银账号，垃圾注册，利用用户隐私诈骗<br>安全开发流程(Security Development Lifecycle)<br>立项阶段与项目经理充分沟通，将安全方案写入开发规范<br>模糊测试(Fuzzing Test): 输入随机数据检测程序漏洞<br>安全是一个持续的过程: 漏洞修补，安全监控，入侵检测，应急响应(Security Response Center)  </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这本道哥的《白帽子讲Web安全》算是我向白帽子迈出的第一步，它覆盖的内容很广，而且带有许多现实漏洞的示例讲解，不过对于没有安全经验的小白(比如我)来说还是很难完全吸收其精华，理解各种漏洞的概念和原理才是初学者的首要任务。个人建议可以结合&lt;a href=&quot;http://www
+    
+    </summary>
+    
+      <category term="Tech" scheme="http://cheesehigh.com/categories/Tech/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>《全球通史》 Reading Notes</title>
