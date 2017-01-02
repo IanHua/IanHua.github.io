@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Cheese High">
 <meta property="og:description" content="这本道哥的《白帽子讲Web安全》算是我向白帽子迈出的第一步，它覆盖的内容很广，而且带有许多现实漏洞的示例讲解，不过对于没有安全经验的小白(比如我)来说还是很难完全吸收其精华，理解各种漏洞的概念和原理才是初学者的首要任务。个人建议可以结合DVWA和FreeBuf上的相应教程来学习会更有Hands-on的感觉。
 安全世界观安全的本质是信任问题Factors of Security: Confident">
-<meta property="og:updated_time" content="2017-01-02T03:07:00.000Z">
+<meta property="og:updated_time" content="2017-01-02T03:10:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《白帽子讲Web安全》 Reading Notes">
 <meta name="twitter:description" content="这本道哥的《白帽子讲Web安全》算是我向白帽子迈出的第一步，它覆盖的内容很广，而且带有许多现实漏洞的示例讲解，不过对于没有安全经验的小白(比如我)来说还是很难完全吸收其精华，理解各种漏洞的概念和原理才是初学者的首要任务。个人建议可以结合DVWA和FreeBuf上的相应教程来学习会更有Hands-on的感觉。
@@ -332,7 +332,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=&quot;target.com/do?method=delete&quot; /&gt;</div></pre></td></tr></table></figure>
 <p>both GET and POST can work<br>session cookie: in the process of browser; third-party cookie: in local disk with expire time<br>Prevent: verification code, referrer header, token  </p>
 <h3 id="点击劫持-ClickJacking"><a href="#点击劫持-ClickJacking" class="headerlink" title="点击劫持(ClickJacking)"></a>点击劫持(ClickJacking)</h3><p>Transparent iframe is covered on the original content<br>图片覆盖，拖拽劫持，触屏劫持(TapJacking)  </p>
-<h3 id="HTML5安全"><a href="#HTML5安全" class="headerlink" title="HTML5安全"></a>HTML5安全</h3><p>新标签: \<video\>, \<audio\>, \<canvas\>  </canvas\></audio\></video\></p>
+<h3 id="HTML5安全"><a href="#HTML5安全" class="headerlink" title="HTML5安全"></a>HTML5安全</h3><p>新标签: <code>&lt;video&gt;, &lt;audio&gt;, &lt;canvas&gt;</code>  </p>
 <h2 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h2><h3 id="SQL注入-SQL-Injection"><a href="#SQL注入-SQL-Injection" class="headerlink" title="SQL注入(SQL Injection)"></a>SQL注入(SQL Injection)</h3><p>Inject SQL commands which DB will execute  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM table WHERE column = xxx OR 1 = 1</div></pre></td></tr></table></figure>
 <p>测试是否存在注入 -&gt; 获取SQL语句格式 -&gt; 获取数据库名，表名，字段名<br>Blind Injection: No result of query from DB, brute force to validate DB information(布尔判断或时间延迟)<br>存储过程(Stored Procedure): User-defined function<br>Prevent: parameterized(PreparedStatement), PDO(PHP Data Object), check data type  </p>
