@@ -106,7 +106,7 @@
 <meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/phase2.png">
 <meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/hexmatch.png">
 <meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/phase3.png">
-<meta property="og:updated_time" content="2017-02-03T04:34:05.000Z">
+<meta property="og:updated_time" content="2017-02-03T04:36:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Buffer Overflow Attack">
 <meta name="twitter:description" content="2016Fall虽然只上了两门课，但是课程负担还是蛮大的，所以18600有一个仅当练习不计分数的Attack Lab一直没有时间做。要成为一名合格的白帽，技能树还是得点地全面一些。对于Attack Lab里的两种攻击方式，虽然为了准备Final已经了解了大概，但是纸上得来终觉浅，还是要亲自实战一番。
@@ -340,7 +340,7 @@
 <h2 id="Code-Injection"><a href="#Code-Injection" class="headerlink" title="Code Injection"></a>Code Injection</h2><p>如果说缓冲区溢出是攻击的基本原理，那么代码注入（Code Injection）就是利用缓冲区溢出来达到执行自定义指令的目的。首先，将事先设计好的字符串作为参数调用gets函数，若字符串不断在栈上堆积以至于覆盖掉栈上原有的内容。如将原本函数的返回地址覆盖为自定义指令的地址，则在函数返回时接下来执行的就不是原来的下一条指令，而是攻击者指定的指令。</p>
 <p>代码注入部分一共有三个关卡，攻击目标都是一个叫做ctarget的可执行程序。</p>
 <h3 id="Phase1"><a href="#Phase1" class="headerlink" title="Phase1"></a>Phase1</h3><p>首先我们来看第一关。第一关是最简单的，并不要求我们注入代码，而仅仅要求利用缓冲区溢出完成篡改返回地址而执行程序中的touch1函数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">void touch1() &#123;	vlevel = 1; /* Part of validation protocol */	printf(&quot;Touch1!: You called touch1()\n&quot;);	validate(1);	exit(0);&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">void touch1() &#123;	vlevel = 1;	printf(&quot;Touch1!: You called touch1()\n&quot;);	validate(1);	exit(0);&#125;</div></pre></td></tr></table></figure>
 <p>先来看一下ctarget中的缓冲区输入部分的代码，对ctarget进行反汇编。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objdump -d ctarget &gt; ctarget.txt</div></pre></td></tr></table></figure>
 <p>找到getbuf函数。</p>
