@@ -1,0 +1,687 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Cheese High" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/cheeseHigh.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="啊，先感叹一句找实习不易。为了准备Java开发岗位的面试，也为了重新过一遍Java的基础知识，就买了这本知乎上口碑还不错的《Java核心技术》（原版名为《Core Java》）来看。作者叫Cay S. Horstmann，他是San Jose State University（传说中的SJSU）的计算机科学系教授，Java的倡导者之一。读下来总体感觉内容比较全面，确实比较适合初学者。对我来讲，集合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Java核心技术》 Reading Notes">
+<meta property="og:url" content="http://cheesehigh.com/2017/04/30/corejava/index.html">
+<meta property="og:site_name" content="Cheese High">
+<meta property="og:description" content="啊，先感叹一句找实习不易。为了准备Java开发岗位的面试，也为了重新过一遍Java的基础知识，就买了这本知乎上口碑还不错的《Java核心技术》（原版名为《Core Java》）来看。作者叫Cay S. Horstmann，他是San Jose State University（传说中的SJSU）的计算机科学系教授，Java的倡导者之一。读下来总体感觉内容比较全面，确实比较适合初学者。对我来讲，集合">
+<meta property="og:updated_time" content="2017-04-30T08:01:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《Java核心技术》 Reading Notes">
+<meta name="twitter:description" content="啊，先感叹一句找实习不易。为了准备Java开发岗位的面试，也为了重新过一遍Java的基础知识，就买了这本知乎上口碑还不错的《Java核心技术》（原版名为《Core Java》）来看。作者叫Cay S. Horstmann，他是San Jose State University（传说中的SJSU）的计算机科学系教授，Java的倡导者之一。读下来总体感觉内容比较全面，确实比较适合初学者。对我来讲，集合">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 《Java核心技术》 Reading Notes | Cheese High </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Cheese High</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Cheese High</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+  
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                《Java核心技术》 Reading Notes
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-04-30T15:10:21+08:00" content="2017-04-30">
+              2017-04-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Tech/" itemprop="url" rel="index">
+                    <span itemprop="name">Tech</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/04/30/corejava/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/30/corejava/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+    <span id="busuanzi_container_page_pv">  |  阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>
+
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>啊，先感叹一句找实习不易。为了准备Java开发岗位的面试，也为了重新过一遍Java的基础知识，就买了这本知乎上口碑还不错的《Java核心技术》（原版名为《Core Java》）来看。作者叫Cay S. Horstmann，他是San Jose State University（传说中的SJSU）的计算机科学系教授，Java的倡导者之一。读下来总体感觉内容比较全面，确实比较适合初学者。对我来讲，集合、并发这两章补了不少知识漏洞。唯一不足的就是翻译有点不清楚，特别是反射，泛型这些地方。这里摘录一些容易忘记的知识点。</p>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>James Gosling<br>applet: 在网页中运行的Java程序<br>程序语言的成功更多取决于支撑系统的能力，而不是优美的语法<br>JRE包含JVM<br>Abstract Window Toolkit(AWT) 事件处理; Swing用户界面<br>UML(Unified Modeling Language)<br>集合接口与实现分离<br>注释不能嵌套，<code>/*</code>会去匹配下面最近的<code>*/</code><br>8种基本类型(4个整型，2个浮点型，char，boolean)，所占字节数固定与平台无关<br>boolean与整型不能转换<br>数字初始化为0，boolean初始化为false，引用初始化为null<br>0b: 二进制<br><code>&gt;&gt;&gt;</code>: 逻辑右移<br>一个字符 -&gt; 一个代码点 -&gt; 一个或两个代码单元<br>首先检查是否为null<br>enum E = {A, B, C}; </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">label:</div><div class="line">&#123;</div><div class="line">break; //跳转到label语句块后</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Java二维数组第一维存的是地址，每个地址再另外分配第二维空间<br>C二维数组是一个连续的内存块<br>final: 不可变，构造时必须初始化<br>static: 类特有的且不属于任何对象<br>strictfp: 严格的浮点运算<br>private: 只能由该类访问<br>protected: 只能由该类，其子类以及同一个包内访问<br>public: 任何类都能访问<br>默认为包内可访问<br>javadoc: 源文件生成HTML文档<br>String… args: 可变数量参数，本质上是数组<br>JAR: Java Archive，使用ZIP格式压缩<br>读写用户配置信息使用Properties和Preferences类  </p>
+<h2 id="对象与类"><a href="#对象与类" class="headerlink" title="对象与类"></a>对象与类</h2><p>面向过程: 全局数据 + 多个过程<br>面向对象: 多个对象数据 + 多个方法<br>对象三要素: 行为，状态，标识<br>封装(Encapsulation): 仅通过对象方法与对象数据交互<br>访问器方法(accessor method)，更改器方法(mutator method)<br>this: 隐式参数表示调用本方法的对象，也可以表示其他构造器<br>方法参数本质上传值，只是对于引用类型的值是引用<br>方法签名(signature): 方法名 + 参数<br>重载(overload): 方法名相同，参数类型、数量不同<br>若已经提供有参构造器，则系统不会提供无参构造器，需要自行提供<br>初始化块先于构造器执行，static块在类第一次加载时执行<br>import static java.lang.Math.*; //静态导入  </p>
+<h2 id="继承-extends"><a href="#继承-extends" class="headerlink" title="继承(extends)"></a>继承(extends)</h2><p>子类(subclass)在超类(superclass)的基础上扩展新的域和方法<br>super: 调用超类方法或构造器<br>子类构造器会默认调用超类无参构造器，除非显式调用super<br>多态(polymorphism): 一个对象变量可以指向多种类型<br>动态绑定(dynamic binding): 运行时自动选择调用超类或子类的方法<br>调用方法步骤: 查找类的方法表，重载解析，查看静态绑定，查看动态绑定<br>final: 类不能被继承，方法不能被覆盖<br>object instanceof class: 测试一个对象是否为一个类的实例，在超类转子类前做检查<br>abstract: 包含抽象方法的类为抽象类，可以有具体域和方法，不能实例化，子类可为抽象类也可实现全部抽象方法<br>int -&gt; Integer: 包装器类<br>list.add(3) -&gt; list.add(Integer.valueOf(3)): 自动装箱<br>Object.equals(a, b); //null安全<br>反射(Reflection): 运行时动态获取类的信息及调用对象方法<br>object.getClass(); Class.forName(s); Class.class;<br>Field, Method, Constructor  </p>
+<h2 id="接口-implements"><a href="#接口-implements" class="headerlink" title="接口(implements)"></a>接口(implements)</h2><p>interface: 类的需求描述，只有方法签名或常量，不加访问修饰符，可以被继承<br>default: 默认方法<br>浅拷贝: 部分域对象没有拷贝; 深拷贝: 所有域都拷贝<br>lambda表达式: 函数式编程<br>(type param) -&gt; {method} &lt;=&gt; class::method(方法引用)<br>函数式接口: lambda表达式可以代替只有一个抽象方法的接口<br>内部类: 访问外围类的域，对外隐藏  </p>
+<h2 id="异常、断言和日志"><a href="#异常、断言和日志" class="headerlink" title="异常、断言和日志"></a>异常、断言和日志</h2><p>Throwable &lt;- Error, Exception<br>Exception &lt;- IOException, RuntimeException<br>受查异常: IOException，必须提供异常处理器或抛出异常<br>非受查异常: Error, RuntimeException  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public void function throws IOException &#123;</div><div class="line">    throw new IOException(“exception!”);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>断言: 检测前置条件是否成立，能够灵活被启用或禁用，用于开发测试阶段<br><code>assert condition:expression;</code><br>日志: 能够灵活被启用或禁用，具有不同级别<br>Logger.getLogger();  </p>
+<h2 id="泛型编程-Generic-Programming"><a href="#泛型编程-Generic-Programming" class="headerlink" title="泛型编程(Generic Programming)"></a>泛型编程(Generic Programming)</h2><p>泛型类: <code>public class c&lt;T&gt;</code><br>泛型方法: <code>public &lt;T&gt; T function(T param)</code><br>类型限定: <code>&lt;T extends class/interface&gt;</code><br>通配符: <code>&lt;? extends/super class/interface&gt;</code><br>虚拟机会进行类型擦除，将泛型替换为原始类型<br>不能构造泛型数组<br>若泛型T和U有继承关系，则<code>class&lt;T&gt;</code>与<code>class&lt;U&gt;</code>没有继承关系  </p>
+<h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><p>Thread类本身实现了Runnable接口<br>推荐实现Runnable接口，能够继承别的类，每次创建线程可以使用同一个HelloRunnable类  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class HelloRunnable implements Runnable &#123;</div><div class="line">    public void run() &#123;</div><div class="line">        System.out.println(&quot;Hello from a thread!&quot;);</div><div class="line">    &#125;</div><div class="line">    public static void main(String args[]) &#123;</div><div class="line">        Runnable hr = new HelloRunnable();</div><div class="line">        Thread t = new Thread(hr);</div><div class="line">        t.start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>不推荐继承Thread类，无法继承别的类，每次创建线程需要new一个HelloThread类  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public class HelloThread extends Thread &#123;</div><div class="line">    public void run() &#123;</div><div class="line">        System.out.println(&quot;Hello from a thread!&quot;);</div><div class="line">    &#125;</div><div class="line">    public static void main(String args[]) &#123;</div><div class="line">        (new HelloThread()).start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>Thread.currentThread();</code><br>State: New, Runnable, Blocked, Waiting, Timed waiting, Terminated<br>t.join(); //current thread pauses execution until t terminates<br>Lock(锁对象): 每一个对象都有一个内部锁，对critical section加锁<br>ReentrantLock, ReentrantReadWriteLock<br>Condition(条件对象): 不满足条件则放弃锁await，等待signalAll<br>synchronized: 使用对象的内部锁和条件<br>volatile: 告知编译器和虚拟机该变量会被并发更新<br>监视器: 每个方法强制加锁<br>阻塞队列BlockingQueue: 生产者线程插入元素，消费者线程取出元素，底层实现线程安全<br>Callable: 异步调用<br>Future: 保存异步调用的结果<br>Executors(执行器): 创建线程池  </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/26/0ctf2017/" rel="next" title="0CTF 2017 Writeup">
+                <i class="fa fa-chevron-left"></i> 0CTF 2017 Writeup
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+            </div>
+            
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://o86az1gay.bkt.clouddn.com/cheeseHigh.png"
+               alt="CheeseHigh" />
+          <p class="site-author-name" itemprop="name">CheeseHigh</p>
+          <p class="site-description motion-element" itemprop="description">White Hat/History</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/IanHua" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础"><span class="nav-number">1.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象与类"><span class="nav-number">2.</span> <span class="nav-text">对象与类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承-extends"><span class="nav-number">3.</span> <span class="nav-text">继承(extends)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口-implements"><span class="nav-number">4.</span> <span class="nav-text">接口(implements)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常、断言和日志"><span class="nav-number">5.</span> <span class="nav-text">异常、断言和日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型编程-Generic-Programming"><span class="nav-number">6.</span> <span class="nav-text">泛型编程(Generic Programming)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发"><span class="nav-number">7.</span> <span class="nav-text">并发</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CheeseHigh</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span id="busuanzi_container_site_pv">
+  &nbsp; | &nbsp; 本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+<span id="busuanzi_container_site_uv">
+  &nbsp; | &nbsp; 本站访客数<span id="busuanzi_value_site_uv"></span>人次
+</span>
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'cheesehigh';
+      var disqus_identifier = '2017/04/30/corejava/';
+      var disqus_title = "《Java核心技术》 Reading Notes";
+      var disqus_url = 'http://cheesehigh.com/2017/04/30/corejava/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+  <script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</body>
+</html>

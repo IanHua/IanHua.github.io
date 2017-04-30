@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cheesehigh.com/"/>
-  <updated>2017-03-28T07:25:05.000Z</updated>
+  <updated>2017-04-30T08:01:52.000Z</updated>
   <id>http://cheesehigh.com/</id>
   
   <author>
@@ -14,6 +14,42 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>《Java核心技术》 Reading Notes</title>
+    <link href="http://cheesehigh.com/2017/04/30/corejava/"/>
+    <id>http://cheesehigh.com/2017/04/30/corejava/</id>
+    <published>2017-04-30T07:10:21.000Z</published>
+    <updated>2017-04-30T08:01:52.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>啊，先感叹一句找实习不易。为了准备Java开发岗位的面试，也为了重新过一遍Java的基础知识，就买了这本知乎上口碑还不错的《Java核心技术》（原版名为《Core Java》）来看。作者叫Cay S. Horstmann，他是San Jose State University（传说中的SJSU）的计算机科学系教授，Java的倡导者之一。读下来总体感觉内容比较全面，确实比较适合初学者。对我来讲，集合、并发这两章补了不少知识漏洞。唯一不足的就是翻译有点不清楚，特别是反射，泛型这些地方。这里摘录一些容易忘记的知识点。</p>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>James Gosling<br>applet: 在网页中运行的Java程序<br>程序语言的成功更多取决于支撑系统的能力，而不是优美的语法<br>JRE包含JVM<br>Abstract Window Toolkit(AWT) 事件处理; Swing用户界面<br>UML(Unified Modeling Language)<br>集合接口与实现分离<br>注释不能嵌套，<code>/*</code>会去匹配下面最近的<code>*/</code><br>8种基本类型(4个整型，2个浮点型，char，boolean)，所占字节数固定与平台无关<br>boolean与整型不能转换<br>数字初始化为0，boolean初始化为false，引用初始化为null<br>0b: 二进制<br><code>&gt;&gt;&gt;</code>: 逻辑右移<br>一个字符 -&gt; 一个代码点 -&gt; 一个或两个代码单元<br>首先检查是否为null<br>enum E = {A, B, C}; </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">label:</div><div class="line">&#123;</div><div class="line">break; //跳转到label语句块后</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Java二维数组第一维存的是地址，每个地址再另外分配第二维空间<br>C二维数组是一个连续的内存块<br>final: 不可变，构造时必须初始化<br>static: 类特有的且不属于任何对象<br>strictfp: 严格的浮点运算<br>private: 只能由该类访问<br>protected: 只能由该类，其子类以及同一个包内访问<br>public: 任何类都能访问<br>默认为包内可访问<br>javadoc: 源文件生成HTML文档<br>String… args: 可变数量参数，本质上是数组<br>JAR: Java Archive，使用ZIP格式压缩<br>读写用户配置信息使用Properties和Preferences类  </p>
+<h2 id="对象与类"><a href="#对象与类" class="headerlink" title="对象与类"></a>对象与类</h2><p>面向过程: 全局数据 + 多个过程<br>面向对象: 多个对象数据 + 多个方法<br>对象三要素: 行为，状态，标识<br>封装(Encapsulation): 仅通过对象方法与对象数据交互<br>访问器方法(accessor method)，更改器方法(mutator method)<br>this: 隐式参数表示调用本方法的对象，也可以表示其他构造器<br>方法参数本质上传值，只是对于引用类型的值是引用<br>方法签名(signature): 方法名 + 参数<br>重载(overload): 方法名相同，参数类型、数量不同<br>若已经提供有参构造器，则系统不会提供无参构造器，需要自行提供<br>初始化块先于构造器执行，static块在类第一次加载时执行<br>import static java.lang.Math.*; //静态导入  </p>
+<h2 id="继承-extends"><a href="#继承-extends" class="headerlink" title="继承(extends)"></a>继承(extends)</h2><p>子类(subclass)在超类(superclass)的基础上扩展新的域和方法<br>super: 调用超类方法或构造器<br>子类构造器会默认调用超类无参构造器，除非显式调用super<br>多态(polymorphism): 一个对象变量可以指向多种类型<br>动态绑定(dynamic binding): 运行时自动选择调用超类或子类的方法<br>调用方法步骤: 查找类的方法表，重载解析，查看静态绑定，查看动态绑定<br>final: 类不能被继承，方法不能被覆盖<br>object instanceof class: 测试一个对象是否为一个类的实例，在超类转子类前做检查<br>abstract: 包含抽象方法的类为抽象类，可以有具体域和方法，不能实例化，子类可为抽象类也可实现全部抽象方法<br>int -&gt; Integer: 包装器类<br>list.add(3) -&gt; list.add(Integer.valueOf(3)): 自动装箱<br>Object.equals(a, b); //null安全<br>反射(Reflection): 运行时动态获取类的信息及调用对象方法<br>object.getClass(); Class.forName(s); Class.class;<br>Field, Method, Constructor  </p>
+<h2 id="接口-implements"><a href="#接口-implements" class="headerlink" title="接口(implements)"></a>接口(implements)</h2><p>interface: 类的需求描述，只有方法签名或常量，不加访问修饰符，可以被继承<br>default: 默认方法<br>浅拷贝: 部分域对象没有拷贝; 深拷贝: 所有域都拷贝<br>lambda表达式: 函数式编程<br>(type param) -&gt; {method} &lt;=&gt; class::method(方法引用)<br>函数式接口: lambda表达式可以代替只有一个抽象方法的接口<br>内部类: 访问外围类的域，对外隐藏  </p>
+<h2 id="异常、断言和日志"><a href="#异常、断言和日志" class="headerlink" title="异常、断言和日志"></a>异常、断言和日志</h2><p>Throwable &lt;- Error, Exception<br>Exception &lt;- IOException, RuntimeException<br>受查异常: IOException，必须提供异常处理器或抛出异常<br>非受查异常: Error, RuntimeException  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public void function throws IOException &#123;</div><div class="line">    throw new IOException(“exception!”);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>断言: 检测前置条件是否成立，能够灵活被启用或禁用，用于开发测试阶段<br><code>assert condition:expression;</code><br>日志: 能够灵活被启用或禁用，具有不同级别<br>Logger.getLogger();  </p>
+<h2 id="泛型编程-Generic-Programming"><a href="#泛型编程-Generic-Programming" class="headerlink" title="泛型编程(Generic Programming)"></a>泛型编程(Generic Programming)</h2><p>泛型类: <code>public class c&lt;T&gt;</code><br>泛型方法: <code>public &lt;T&gt; T function(T param)</code><br>类型限定: <code>&lt;T extends class/interface&gt;</code><br>通配符: <code>&lt;? extends/super class/interface&gt;</code><br>虚拟机会进行类型擦除，将泛型替换为原始类型<br>不能构造泛型数组<br>若泛型T和U有继承关系，则<code>class&lt;T&gt;</code>与<code>class&lt;U&gt;</code>没有继承关系  </p>
+<h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><p>Thread类本身实现了Runnable接口<br>推荐实现Runnable接口，能够继承别的类，每次创建线程可以使用同一个HelloRunnable类  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class HelloRunnable implements Runnable &#123;</div><div class="line">    public void run() &#123;</div><div class="line">        System.out.println(&quot;Hello from a thread!&quot;);</div><div class="line">    &#125;</div><div class="line">    public static void main(String args[]) &#123;</div><div class="line">        Runnable hr = new HelloRunnable();</div><div class="line">        Thread t = new Thread(hr);</div><div class="line">        t.start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>不推荐继承Thread类，无法继承别的类，每次创建线程需要new一个HelloThread类  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public class HelloThread extends Thread &#123;</div><div class="line">    public void run() &#123;</div><div class="line">        System.out.println(&quot;Hello from a thread!&quot;);</div><div class="line">    &#125;</div><div class="line">    public static void main(String args[]) &#123;</div><div class="line">        (new HelloThread()).start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>Thread.currentThread();</code><br>State: New, Runnable, Blocked, Waiting, Timed waiting, Terminated<br>t.join(); //current thread pauses execution until t terminates<br>Lock(锁对象): 每一个对象都有一个内部锁，对critical section加锁<br>ReentrantLock, ReentrantReadWriteLock<br>Condition(条件对象): 不满足条件则放弃锁await，等待signalAll<br>synchronized: 使用对象的内部锁和条件<br>volatile: 告知编译器和虚拟机该变量会被并发更新<br>监视器: 每个方法强制加锁<br>阻塞队列BlockingQueue: 生产者线程插入元素，消费者线程取出元素，底层实现线程安全<br>Callable: 异步调用<br>Future: 保存异步调用的结果<br>Executors(执行器): 创建线程池  </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;啊，先感叹一句找实习不易。为了准备Java开发岗位的面试，也为了重新过一遍Java的基础知识，就买了这本知乎上口碑还不错的《Java核心技术》（原版名为《Core Java》）来看。作者叫Cay S. Horstmann，他是San Jose State Universit
+    
+    </summary>
+    
+      <category term="Tech" scheme="http://cheesehigh.com/categories/Tech/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>0CTF 2017 Writeup</title>
