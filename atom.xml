@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cheesehigh.com/"/>
-  <updated>2017-04-30T08:01:52.000Z</updated>
+  <updated>2017-05-16T14:58:43.000Z</updated>
   <id>http://cheesehigh.com/</id>
   
   <author>
@@ -14,6 +14,53 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>《浪潮之巅》 Reading Notes</title>
+    <link href="http://cheesehigh.com/2017/05/16/langchaozhidian/"/>
+    <id>http://cheesehigh.com/2017/05/16/langchaozhidian/</id>
+    <published>2017-05-16T13:48:17.000Z</published>
+    <updated>2017-05-16T14:58:43.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>这本《浪潮之巅》断断续续看了半年多，它主要分析了近一个世纪中主要科技公司的兴衰历史和成功规律，它们就像是这个时代一个接一个的浪潮。作者吴军毕业于清华和Johns Hopkins，并先后就职于Google和腾讯。看完这本书可以对科技行业有一个整体的认识，能够大致判断一个科技公司是否有前景。一个残酷而又美好的事实是：和最基本的自然规律一样，行业更替在不断进行，不能适应市场变化的公司将最终被淘汰，新的公司会登上历史舞台。</p>
+<h2 id="信息产业规律"><a href="#信息产业规律" class="headerlink" title="信息产业规律"></a>信息产业规律</h2><p>摩尔定律: 集成电路的集成度每两年会翻一番<br>安迪比尔定律: 比尔(比尔盖茨)要拿走安迪(原英特尔CEO)所给的，用户不断更新硬件<br>反摩尔定律: 同样的产品每两年价格降一半<br>70-20-10市场份额<br>诺威格定律: 当市场份额饱和时需要扩展和转型，找到新增长点<br>基因决定定律  </p>
+<h2 id="Silicon-Valley"><a href="#Silicon-Valley" class="headerlink" title="Silicon Valley"></a>Silicon Valley</h2><p>创业公司需要好的创始人，商业模式，外部环境<br>存活率很低<br>灵魂是创新<br>其他模仿硅谷的地方给人才设置门槛很难成功<br>好的商业模式: 增加自动化，减少人力成本  </p>
+<h2 id="AT-amp-T"><a href="#AT-amp-T" class="headerlink" title="AT&amp;T"></a>AT&amp;T</h2><p>贝尔实验室<br>1984年司法部拆分成七家公司，主营业务由原来的通话业务转向了新兴的网络和移动通信<br>1995年公司高管在华尔街推动下进行自我拆分从而衰落<br>专门从事电信业务的AT&amp;T公司、从事设备制造业务的朗讯和从事计算机业务的NCR  </p>
+<h2 id="IBM"><a href="#IBM" class="headerlink" title="IBM"></a>IBM</h2><p>创始人Thomas J. Watson<br>制表机，兼容机，服务器<br>主要服务对象为政府和大型企业  </p>
+<h2 id="Apple"><a href="#Apple" class="headerlink" title="Apple"></a>Apple</h2><p>富于创新的消费电子公司<br>图形化界面操作系统被盖茨看到了，与微软打官司，最终和解<br>乔布斯被踢出，收购皮克斯，重返苹果<br>Macintosh纵向封闭，Windows横向开放<br>iPod, iPhone, AppleTV  </p>
+<h2 id="Intel"><a href="#Intel" class="headerlink" title="Intel"></a>Intel</h2><p>创始人Gordon Moore<br>大量投入研发芯片<br>坚持CISC<br>移动端没有市场  </p>
+<h2 id="Microsoft"><a href="#Microsoft" class="headerlink" title="Microsoft"></a>Microsoft</h2><p>利用DOS拖延IBM直到开发出Windows<br>捆绑IE搞垮Netscape，强调IE是Windows的功能而非软件  </p>
+<h2 id="Cisco"><a href="#Cisco" class="headerlink" title="Cisco"></a>Cisco</h2><p>路由器<br>支持内部创业或离职创业之后收购<br>华为成本优势占领中低端市场  </p>
+<h2 id="Yahoo"><a href="#Yahoo" class="headerlink" title="Yahoo"></a>Yahoo</h2><p>创始人杨致远<br>开放，免费<br>卖广告流量<br>本身可以做好媒体广告，却要和Google拼搜索广告技术  </p>
+<h2 id="Hewlett-Packard-HP"><a href="#Hewlett-Packard-HP" class="headerlink" title="Hewlett-Packard (HP)"></a>Hewlett-Packard (HP)</h2><p>斯坦福大学出租土地成立斯坦福工业园<br>拆出科学、医疗仪器部门，发展计算机与打印机<br>消费家电公司  </p>
+<h2 id="Motorola"><a href="#Motorola" class="headerlink" title="Motorola"></a>Motorola</h2><p>无线通信设备不如诺基亚，DSP不如TI，CPU不如Intel<br>铱星计划：66颗近地卫星不需要地面基站<br>注重产品质量  </p>
+<h2 id="Sun"><a href="#Sun" class="headerlink" title="Sun"></a>Sun</h2><p>开源Solaris提供服务<br>Java, JSP与微软ASP竞争<br>被Oracle收购  </p>
+<h2 id="Novell"><a href="#Novell" class="headerlink" title="Novell"></a>Novell</h2><p>微机局域网操作系统，输给Windows NT  </p>
+<h2 id="Venture-Capital"><a href="#Venture-Capital" class="headerlink" title="Venture Capital"></a>Venture Capital</h2><p>世界经济发展 -&gt; 股票呈上涨趋势<br>科技发展 -&gt; 风险投资存在<br>每次投资成立一个有限责任公司(特拉华州，开曼群岛，巴哈马)<br>天使投资: 小型风险投资<br>知识产权，革新性技术，商业模式，进入壁垒<br>储备职业经理人<br>Sand Hill Road: KPCB, Sequoia Capital, NEA, Mayfield, IDG, Softbank  </p>
+<h2 id="Stanford-University"><a href="#Stanford-University" class="headerlink" title="Stanford University"></a>Stanford University</h2><p>经费大多来自工业界(注重应用研究)，东部名校经费大多来自政府(注重理论研究)<br>开放，职业教育，多样性，培养全才，创业气氛  </p>
+<h2 id="Google"><a href="#Google" class="headerlink" title="Google"></a>Google</h2><p>把互联网内容免费且方便地送给用户<br>不作恶，搜索结果公正且没有人为干预<br>搜索广告数量少，价格高<br>针对搜索关键词和网页内容投放高度相关的广告<br>早期员工都是精英<br>学习微软只做操作系统  </p>
+<h2 id="Nokia"><a href="#Nokia" class="headerlink" title="Nokia"></a>Nokia</h2><p>由芬兰木工厂转型<br>支持欧洲GSM标准<br>抓住数字通信的机遇，注重功能、方便、新颖  </p>
+<h2 id="3M"><a href="#3M" class="headerlink" title="3M"></a>3M</h2><p>胶带，软盘，液晶显示器膜<br>允许员工15%的工作时间用于自由创新<br>卖掉还在盈利但是前景不好的部门<br>面向大众的产品比面向企业的产品营收更稳定  </p>
+<h2 id="GE-General-Electric"><a href="#GE-General-Electric" class="headerlink" title="GE(General Electric)"></a>GE(General Electric)</h2><p>爱迪生创立<br>电力，能源，航空发动机，医疗，金融  </p>
+<h2 id="Ebay"><a href="#Ebay" class="headerlink" title="Ebay"></a>Ebay</h2><p>在线拍卖旧货转型为在线商店<br>收购Paypal，后来分拆<br>甩手掌柜不管交易  </p>
+<h2 id="Amazon"><a href="#Amazon" class="headerlink" title="Amazon"></a>Amazon</h2><p>在线书店转型为在线商店<br>作为中间人保障交易顺利  </p>
+<h2 id="Dell"><a href="#Dell" class="headerlink" title="Dell"></a>Dell</h2><p>制造业环节: 产品设计，原料采购，仓储运输，加工制造，订单处理，销售<br>只负责订单处理和直销，其他全部外包  </p>
+<h2 id="Web-2-0"><a href="#Web-2-0" class="headerlink" title="Web 2.0"></a>Web 2.0</h2><p>UGC，开放，交互，不与用户竞争<br>难以盈利，流量价值不如搜索引擎  </p>
+<h2 id="经济危机"><a href="#经济危机" class="headerlink" title="经济危机"></a>经济危机</h2><p>经济危机也是优胜劣汰的机遇<br>资本从实体经济向虚拟经济转移<br>超前消费<br>资产阶级革命: 封建领主用特权交换财富  </p>
+<h2 id="下一个风口"><a href="#下一个风口" class="headerlink" title="下一个风口"></a>下一个风口</h2><p>新能源，核能，电动汽车<br>生物制药  </p>
+<h2 id="BAT"><a href="#BAT" class="headerlink" title="BAT"></a>BAT</h2><p>机遇: 移动互联网，云计算，互联网金融<br>百度: 过度依赖搜索广告，转型缓慢，押宝人工智能<br>阿里巴巴: 电商，支付，云计算<br>腾讯: 社交，游戏<br>阿里、腾讯的市值是百度的4倍  </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这本《浪潮之巅》断断续续看了半年多，它主要分析了近一个世纪中主要科技公司的兴衰历史和成功规律，它们就像是这个时代一个接一个的浪潮。作者吴军毕业于清华和Johns Hopkins，并先后就职于Google和腾讯。看完这本书可以对科技行业有一个整体的认识，能够大致判断一个科技公
+    
+    </summary>
+    
+      <category term="Tech" scheme="http://cheesehigh.com/categories/Tech/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>《Java核心技术》 Reading Notes</title>
