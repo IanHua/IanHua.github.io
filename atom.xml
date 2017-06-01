@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cheesehigh.com/"/>
-  <updated>2017-05-16T14:58:43.000Z</updated>
+  <updated>2017-06-01T09:09:12.000Z</updated>
   <id>http://cheesehigh.com/</id>
   
   <author>
@@ -14,6 +14,52 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>《Essential C++》 Reading Notes</title>
+    <link href="http://cheesehigh.com/2017/06/01/cplusplus/"/>
+    <id>http://cheesehigh.com/2017/06/01/cplusplus/</id>
+    <published>2017-06-01T07:46:42.000Z</published>
+    <updated>2017-06-01T09:09:12.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>大一上学期学的半本谭浩强算是还给李波了，鹅厂的主流语言是C++，不得不快速把它捡起来。作者Stanley B. Lippman曾在C++之父Bjarne Stroustrup所领导的贝尔实验室里共同研发cfront编译器，同时他也是《C++ Primer》的作者之一，目前就职于动画电影公司Dreamworks。在短短200页的篇幅里，C++的基本语法，面向过程以及面向对象的最最最重要的内容都被阐述的非常清楚，非常适合有一定经验的程序员快速上手C++。</p>
+<p>自己对比了一下C++和Java，虽然牺牲了一点性能，但后者的使用友好度确实高于前者。比如随时随地定义与使用方法无需提前声明，默认虚函数，将多重继承转化为单一继承和接口，泛型类和泛型方法的简单定义语法，自动垃圾回收等机制替程序员省了不少事。</p>
+<h2 id="Basic-C-Programming"><a href="#Basic-C-Programming" class="headerlink" title="Basic C++ Programming"></a>Basic C++ Programming</h2><p>bool, char, short int, int, long int, float, double, long double<br>命名用下划线<br>namespace: 避免命名冲突<br>const: 不再变化<br>指针先检查再使用<br>if (ptr &amp;&amp; ptr-&gt;function())<br>enum E {A, B, C};<br>static_cast<new\_type>(object); // 强制类型转换<br>dynamic_cast<new\_type>(object); // runtime类型转换<br>typedef existing_type new_name;  </new\_type></new\_type></p>
+<h2 id="Procedural-Programming"><a href="#Procedural-Programming" class="headerlink" title="Procedural Programming"></a>Procedural Programming</h2><p>函数先声明后调用<br>T &amp;ref = val; // 引用，相当于别名，非0且一定代表某个对象<br>方法参数拷贝传值，加&amp;为非拷贝直接引用<br><code>T *ptr = new T(initial_value); delete ptr;</code><br><code>T *ptr = new T[n]; delete [] ptr;</code><br>在函数声明中形参可以设置默认值<br>static: 局部静态对象(函数返回后依然存在)，静态函数通过类就能调用<br>inline: 直接展开函数提高性能<br>函数模板(泛型方法)<br>template <typename t=""> T function(T param);<br>函数指针，直接按名字调用，实现函数式编程<br>T (*function_ptr)(T)  </typename></p>
+<h2 id="Object-Based-Programming"><a href="#Object-Based-Programming" class="headerlink" title="Object-Based Programming"></a>Object-Based Programming</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class myClass &#123;</div><div class="line">public:</div><div class="line">    myClass(); // 构造函数(constructor)</div><div class="line">    ~myClass(); // 析构函数(destructor)</div><div class="line">    T function(T param);</div><div class="line">    T function2(T param) const; // 不改变对象状态</div><div class="line">    static T function3(T param); // 静态成员函数，通过类直接调用myClass::function3(param);</div><div class="line">    bool operator==(const myClass&amp;) const; // 运算符重载</div><div class="line">private:</div><div class="line">    string str;</div><div class="line">    T data;</div><div class="line">    mutable T data2; // 可变数据成员，用于const函数且不会改变对象实际状态</div><div class="line">    static T data3; // 静态数据成员，可被同类对象共享</div><div class="line">&#125;;</div><div class="line">T myClass::function(T param) </div><div class="line">: str(&quot;string&quot;) // member initialization list，先于函数体执行</div><div class="line">&#123;</div><div class="line">    data = param;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>类定义和inline成员函数放在头文件中，非inline成员函数放在程序文件中<br>this: 调用本函数的对象的指针<br>friend: 类中声明友元类与友元函数，可以访问private成员<br>function object: 重载函数调用运算符bool operator()的对象，即可被当作函数来调用<br>类成员函数指针: <code>T (myClass::*function_ptr)(T)</code><br>类模板(泛型类)  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">template &lt;typename T&gt; class myClass &#123;</div><div class="line">    myClass2&lt;T&gt; *ptr;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>类模板成员函数<br><code>template &lt;typename T&gt; T myClass&lt;T&gt;::function(T param);</code><br>常量表达式作为template参数  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">template &lt;int param=1&gt; class myClass &#123;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="Object-Oriented-Programming"><a href="#Object-Oriented-Programming" class="headerlink" title="Object-Oriented Programming"></a>Object-Oriented Programming</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">class subClass : public myClass &#123; // subClass继承myClass</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>virtual(虚函数): 子类覆盖超类方法，在runtime动态解析调用超类还是子类的函数<br>超类中声明virtual，子类中可以不声明virtual，函数定义时不必加virtual<br>纯虚函数: 抽象类的抽象函数，virtual T function(T param) = 0;<br>先调用超类构造函数，后调用子类构造函数<br>先调用子类析构函数，后调用超类析构函数<br>protected: 可被子类访问<br>超类对象无法动态解析虚函数，只有超类指针或引用才能动态解析虚函数  </p>
+<h2 id="Exception-Handling"><a href="#Exception-Handling" class="headerlink" title="Exception Handling"></a>Exception Handling</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">throw exception_class();</div><div class="line">try &#123;</div><div class="line">&#125;</div><div class="line">catch(exception_class &amp;e) &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Standard-Template-Library-STL"><a href="#Standard-Template-Library-STL" class="headerlink" title="Standard Template Library (STL)"></a>Standard Template Library (STL)</h2><h3 id="container"><a href="#container" class="headerlink" title="container"></a>container</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">=, ==, !=, empty(), size(), clear()  </div><div class="line">begin();end();  </div><div class="line">insert();erase();  </div><div class="line">push\_back(elem);  </div><div class="line">pop_back();  </div><div class="line">push\_front(elem);  </div><div class="line">pop\_front();  </div><div class="line">front();back();  </div><div class="line">container&lt;container&lt;T&gt; &gt; c; // 注意空格</div></pre></td></tr></table></figure>
+<h3 id="vector-ArrayList"><a href="#vector-ArrayList" class="headerlink" title="vector - ArrayList"></a>vector - ArrayList</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#include &lt;vector&gt;  </div><div class="line">vector&lt;T&gt; v(size);  </div><div class="line">vector&lt;T&gt; v(array, array+size);</div></pre></td></tr></table></figure>
+<h3 id="list-LinkedList"><a href="#list-LinkedList" class="headerlink" title="list - LinkedList"></a>list - LinkedList</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#include &lt;list&gt;  </div><div class="line">list&lt;T&gt; l(size);  </div><div class="line">list&lt;T&gt; l(array, array+size);</div></pre></td></tr></table></figure>
+<h3 id="deque-ArrayDeque"><a href="#deque-ArrayDeque" class="headerlink" title="deque - ArrayDeque"></a>deque - ArrayDeque</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#include &lt;deque&gt;  </div><div class="line">deque&lt;T&gt; q(size);  </div><div class="line">deque&lt;T&gt; q(array, array+size);</div></pre></td></tr></table></figure>
+<h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">#include &lt;map&gt;  </div><div class="line">map&lt;K, V&gt; m;  </div><div class="line">m[K] = V;  </div><div class="line">iter-&gt;first; // Key  </div><div class="line">iter-&gt;second; // Value  </div><div class="line">iter = map.find(Key);  </div><div class="line">map.count(Key); </div><div class="line">``` </div><div class="line"></div><div class="line">### set</div></pre></td></tr></table></figure>
+<p>#include <set><br>set<t> s;<br>s.insert(Key);<br>s.count(Key);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### iterator</div></pre></td></tr></table></figure></t></set></p>
+<p>container<t>::iterator iter = c.begin()/c.end();<br>iter++; *iter;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### Algorithm</div></pre></td></tr></table></figure></t></p>
+<p>#include <algorithm><br>void sort(begin, end);<br>bool binary_search(begin, end, elem);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## Library</div><div class="line">尖括号表示其他目录下的标准头文件，双引号表示本目录下的自定义头文件</div></pre></td></tr></table></figure></algorithm></p>
+<p>#include <string><br>string str(“string”);<br>str.c_str();  </string></p>
+<p>#include <cstdlib><br>exit();  </cstdlib></p>
+<p>#include <functional><br>function object adapter: binder, nagator  </functional></p>
+<p>#include <iterator><br>iterator inserter  </iterator></p>
+<p>#include <fstream><br>ifstream, ofstream  </fstream></p>
+<p>#include <typeinfo><br>typeid(object); // runtime类型鉴定(Run-Time Type Identification)<br>```</typeinfo></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;大一上学期学的半本谭浩强算是还给李波了，鹅厂的主流语言是C++，不得不快速把它捡起来。作者Stanley B. Lippman曾在C++之父Bjarne Stroustrup所领导的贝尔实验室里共同研发cfront编译器，同时他也是《C++ Primer》的作者之一，目前就
+    
+    </summary>
+    
+      <category term="Tech" scheme="http://cheesehigh.com/categories/Tech/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>《浪潮之巅》 Reading Notes</title>
